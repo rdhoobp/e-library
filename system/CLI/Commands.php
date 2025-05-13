@@ -1,207 +1,217 @@
 <?php
 
-declare(strict_types=1);
-
 /**
- * This file is part of CodeIgniter 4 framework.
+ * This file is part of the CodeIgniter 4 framework.
  *
  * (c) CodeIgniter Foundation <admin@codeigniter.com>
  *
- * For the full copyright and license information, please view
- * the LICENSE file that was distributed with this source code.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace CodeIgniter\CLI;
 
-use CodeIgniter\Autoloader\FileLocatorInterface;
-use CodeIgniter\Events\Events;
 use CodeIgniter\Log\Logger;
+use Config\Services;
 use ReflectionClass;
 use ReflectionException;
 
 /**
- * Core functionality for running, listing, etc commands.
+ * Class Commands
  *
- * @phpstan-type commands_list array<string, array{'class': class-string<BaseCommand>, 'file': string, 'group': string,'description': string}>
+ * Core functionality for running, listing, etc commands.
  */
 class Commands
 {
-    /**
-     * The found commands.
-     *
-     * @var commands_list
-     */
-    protected $commands = [];
+	/**
+	 * The found commands.
+	 *
+	 * @var array
+	 */
+	protected $commands = [];
 
-    /**
-     * Logger instance.
-     *
-     * @var Logger
-     */
-    protected $logger;
+	/**
+	 * Logger instance.
+	 *
+	 * @var Logger
+	 */
+	protected $logger;
 
-    /**
-     * Constructor
-     *
-     * @param Logger|null $logger
-     */
-    public function __construct($logger = null)
-    {
-        $this->logger = $logger ?? service('logger');
-        $this->discoverCommands();
-    }
+	/**
+	 * Constructor
+	 *
+	 * @param Logger|null $logger
+	 */
+	public function __construct($logger = null)
+	{
+		$this->logger = $logger ?? Services::logger();
+	}
 
-    /**
-     * Runs a command given
-     *
-     * @param array<int|string, string|null> $params
-     *
-     * @return int Exit code
-     */
-    public function run(string $command, array $params)
-    {
-        if (! $this->verifyCommand($command, $this->commands)) {
-            return EXIT_ERROR;
-        }
+	/**
+	 * Runs a command given
+	 *
+	 * @param string $command
+	 * @param array  $params
+	 */
+	public function run(string $command, array $params)
+	{
+		$this->discoverCommands();
 
-        // The file would have already been loaded during the
-        // createCommandList function...
-        $className = $this->commands[$command]['class'];
-        $class     = new $className($this->logger, $this);
+		if (! $this->verifyCommand($command, $this->commands))
+		{
+			return;
+		}
 
-        Events::trigger('pre_command');
+		// The file would have already been loaded during the
+		// createCommandList function...
+		$className = $this->commands[$command]['class'];
+		$class     = new $className($this->logger, $this);
 
-        $exit = $class->run($params);
+		return $class->run($params);
+	}
 
-        Events::trigger('post_command');
+	/**
+	 * Provide access to the list of commands.
+	 *
+	 * @return array
+	 */
+	public function getCommands()
+	{
+		$this->discoverCommands();
 
-        return $exit;
-    }
+		return $this->commands;
+	}
 
-    /**
-     * Provide access to the list of commands.
-     *
-     * @return commands_list
-     */
-    public function getCommands()
-    {
-        return $this->commands;
-    }
+	/**
+	 * Discovers all commands in the framework and within user code,
+	 * and collects instances of them to work with.
+	 */
+	public function discoverCommands()
+	{
+		if (! empty($this->commands))
+		{
+			return;
+		}
 
-    /**
-     * Discovers all commands in the framework and within user code,
-     * and collects instances of them to work with.
-     *
-     * @return void
-     */
-    public function discoverCommands()
-    {
-        if ($this->commands !== []) {
-            return;
-        }
+		$files = service('locator')->listFiles('Commands/');
 
-        /** @var FileLocatorInterface */
-        $locator = service('locator');
-        $files   = $locator->listFiles('Commands/');
+		// If no matching command files were found, bail
+		if (empty($files))
+		{
+			// This should never happen in unit testing.
+			// if it does, we have far bigger problems!
+			// @codeCoverageIgnoreStart
+			return;
+			// @codeCoverageIgnoreEnd
+		}
 
-        // If no matching command files were found, bail
-        // This should never happen in unit testing.
-        if ($files === []) {
-            return; // @codeCoverageIgnore
-        }
+		// Loop over each file checking to see if a command with that
+		// alias exists in the class. If so, return it. Otherwise, try the next.
+		foreach ($files as $file)
+		{
+			$className = Services::locator()->findQualifiedNameFromPath($file);
+			if (empty($className) || ! class_exists($className))
+			{
+				continue;
+			}
 
-        // Loop over each file checking to see if a command with that
-        // alias exists in the class.
-        foreach ($files as $file) {
-            /** @var class-string<BaseCommand>|false */
-            $className = $locator->findQualifiedNameFromPath($file);
+			try
+			{
+				$class = new ReflectionClass($className);
 
-            if ($className === false || ! class_exists($className)) {
-                continue;
-            }
+				if (! $class->isInstantiable() || ! $class->isSubclassOf(BaseCommand::class))
+				{
+					continue;
+				}
 
-            try {
-                $class = new ReflectionClass($className);
+				$class = new $className($this->logger, $this);
 
-                if (! $class->isInstantiable() || ! $class->isSubclassOf(BaseCommand::class)) {
-                    continue;
-                }
+				// Store it!
+				if (! is_null($class->group))
+				{
+					$this->commands[$class->name] = [
+						'class'       => $className,
+						'file'        => $file,
+						'group'       => $class->group,
+						'description' => $class->description,
+					];
+				}
 
-                $class = new $className($this->logger, $this);
+				$class = null;
+				unset($class);
+			}
+			catch (ReflectionException $e)
+			{
+				$this->logger->error($e->getMessage());
+			}
+		}
 
-                if (isset($class->group) && ! isset($this->commands[$class->name])) {
-                    $this->commands[$class->name] = [
-                        'class'       => $className,
-                        'file'        => $file,
-                        'group'       => $class->group,
-                        'description' => $class->description,
-                    ];
-                }
+		asort($this->commands);
+	}
 
-                unset($class);
-            } catch (ReflectionException $e) {
-                $this->logger->error($e->getMessage());
-            }
-        }
+	/**
+	 * Verifies if the command being sought is found
+	 * in the commands list.
+	 *
+	 * @param string $command
+	 * @param array  $commands
+	 *
+	 * @return boolean
+	 */
+	public function verifyCommand(string $command, array $commands): bool
+	{
+		if (isset($commands[$command]))
+		{
+			return true;
+		}
 
-        asort($this->commands);
-    }
+		$message = lang('CLI.commandNotFound', [$command]);
 
-    /**
-     * Verifies if the command being sought is found
-     * in the commands list.
-     *
-     * @param commands_list $commands
-     */
-    public function verifyCommand(string $command, array $commands): bool
-    {
-        if (isset($commands[$command])) {
-            return true;
-        }
+		if ($alternatives = $this->getCommandAlternatives($command, $commands))
+		{
+			if (count($alternatives) === 1)
+			{
+				$message .= "\n\n" . lang('CLI.altCommandSingular') . "\n    ";
+			}
+			else
+			{
+				$message .= "\n\n" . lang('CLI.altCommandPlural') . "\n    ";
+			}
 
-        $message      = lang('CLI.commandNotFound', [$command]);
-        $alternatives = $this->getCommandAlternatives($command, $commands);
+			$message .= implode("\n    ", $alternatives);
+		}
 
-        if ($alternatives !== []) {
-            if (count($alternatives) === 1) {
-                $message .= "\n\n" . lang('CLI.altCommandSingular') . "\n    ";
-            } else {
-                $message .= "\n\n" . lang('CLI.altCommandPlural') . "\n    ";
-            }
+		CLI::error($message);
+		CLI::newLine();
 
-            $message .= implode("\n    ", $alternatives);
-        }
+		return false;
+	}
 
-        CLI::error($message);
-        CLI::newLine();
+	/**
+	 * Finds alternative of `$name` among collection
+	 * of commands.
+	 *
+	 * @param string $name
+	 * @param array  $collection
+	 *
+	 * @return array
+	 */
+	protected function getCommandAlternatives(string $name, array $collection): array
+	{
+		$alternatives = [];
 
-        return false;
-    }
+		foreach ($collection as $commandName => $attributes)
+		{
+			$lev = levenshtein($name, $commandName);
 
-    /**
-     * Finds alternative of `$name` among collection
-     * of commands.
-     *
-     * @param commands_list $collection
-     *
-     * @return list<string>
-     */
-    protected function getCommandAlternatives(string $name, array $collection): array
-    {
-        /** @var array<string, int> */
-        $alternatives = [];
+			if ($lev <= strlen($commandName) / 3 || strpos($commandName, $name) !== false)
+			{
+				$alternatives[$commandName] = $lev;
+			}
+		}
 
-        /** @var string $commandName */
-        foreach (array_keys($collection) as $commandName) {
-            $lev = levenshtein($name, $commandName);
+		ksort($alternatives, SORT_NATURAL | SORT_FLAG_CASE);
 
-            if ($lev <= strlen($commandName) / 3 || str_contains($commandName, $name)) {
-                $alternatives[$commandName] = $lev;
-            }
-        }
-
-        ksort($alternatives, SORT_NATURAL | SORT_FLAG_CASE);
-
-        return array_keys($alternatives);
-    }
+		return array_keys($alternatives);
+	}
 }

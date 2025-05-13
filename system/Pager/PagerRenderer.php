@@ -1,14 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 /**
- * This file is part of CodeIgniter 4 framework.
+ * This file is part of the CodeIgniter 4 framework.
  *
  * (c) CodeIgniter Foundation <admin@codeigniter.com>
  *
- * For the full copyright and license information, please view
- * the LICENSE file that was distributed with this source code.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace CodeIgniter\Pager;
@@ -21,484 +19,438 @@ use CodeIgniter\HTTP\URI;
  * This class is passed to the view that describes the pagination,
  * and is used to get the link information and provide utility
  * methods needed to work with pagination.
- *
- * @see \CodeIgniter\Pager\PagerRendererTest
  */
 class PagerRenderer
 {
-    /**
-     * First page number in the set of links to be displayed.
-     *
-     * @var int
-     */
-    protected $first;
+	/**
+	 * First page number.
+	 *
+	 * @var integer
+	 */
+	protected $first;
 
-    /**
-     * Last page number in the set of links to be displayed.
-     *
-     * @var int
-     */
-    protected $last;
+	/**
+	 * Last page number.
+	 *
+	 * @var integer
+	 */
+	protected $last;
 
-    /**
-     * Current page number.
-     *
-     * @var int
-     */
-    protected $current;
+	/**
+	 * Current page number.
+	 *
+	 * @var integer
+	 */
+	protected $current;
 
-    /**
-     * Total number of items.
-     *
-     * @var int
-     */
-    protected $total;
+	/**
+	 * Total number of items.
+	 *
+	 * @var integer
+	 */
+	protected $total;
 
-    /**
-     * Total number of pages.
-     *
-     * @var int
-     */
-    protected $pageCount;
+	/**
+	 * Total number of pages.
+	 *
+	 * @var integer
+	 */
+	protected $pageCount;
 
-    /**
-     * URI base for pagination links
-     *
-     * @var URI
-     */
-    protected $uri;
+	/**
+	 * URI base for pagination links
+	 *
+	 * @var URI
+	 */
+	protected $uri;
 
-    /**
-     * Segment number used for pagination.
-     *
-     * @var int
-     */
-    protected $segment;
+	/**
+	 * Segment number used for pagination.
+	 *
+	 * @var integer
+	 */
+	protected $segment;
 
-    /**
-     * Name of $_GET parameter
-     *
-     * @var string
-     */
-    protected $pageSelector;
+	/**
+	 * Name of $_GET parameter
+	 *
+	 * @var string
+	 */
+	protected $pageSelector;
 
-    /**
-     * Returns the number of results per page that should be shown.
-     */
-    protected ?int $perPage;
+	//--------------------------------------------------------------------
 
-    /**
-     * The number of items the page starts with.
-     */
-    protected ?int $perPageStart = null;
+	/**
+	 * Constructor.
+	 *
+	 * @param array $details
+	 */
+	public function __construct(array $details)
+	{
+		$this->first        = 1;
+		$this->last         = $details['pageCount'];
+		$this->current      = $details['currentPage'];
+		$this->total        = $details['total'];
+		$this->uri          = $details['uri'];
+		$this->pageCount    = $details['pageCount'];
+		$this->segment      = $details['segment'] ?? 0;
+		$this->pageSelector = $details['pageSelector'] ?? 'page';
+	}
 
-    /**
-     * The number of items the page ends with.
-     */
-    protected ?int $perPageEnd = null;
+	//--------------------------------------------------------------------
 
-    /**
-     * Constructor.
-     */
-    public function __construct(array $details)
-    {
-        // `first` and `last` will be updated by `setSurroundCount()`.
-        // You must call `setSurroundCount()` after instantiation.
-        $this->first = 1;
-        $this->last  = $details['pageCount'];
+	/**
+	 * Sets the total number of links that should appear on either
+	 * side of the current page. Adjusts the first and last counts
+	 * to reflect it.
+	 *
+	 * @param integer|null $count
+	 *
+	 * @return PagerRenderer
+	 */
+	public function setSurroundCount(int $count = null)
+	{
+		$this->updatePages($count);
 
-        $this->current      = $details['currentPage'];
-        $this->total        = $details['total'];
-        $this->uri          = $details['uri'];
-        $this->pageCount    = $details['pageCount'];
-        $this->segment      = $details['segment'] ?? 0;
-        $this->pageSelector = $details['pageSelector'] ?? 'page';
-        $this->perPage      = $details['perPage'] ?? null;
-        $this->updatePerPages();
-    }
+		return $this;
+	}
 
-    /**
-     * Sets the total number of links that should appear on either
-     * side of the current page. Adjusts the first and last counts
-     * to reflect it.
-     *
-     * @return PagerRenderer
-     */
-    public function setSurroundCount(?int $count = null)
-    {
-        $this->updatePages($count);
+	//--------------------------------------------------------------------
 
-        return $this;
-    }
+	/**
+	 * Checks to see if there is a "previous" page before our "first" page.
+	 *
+	 * @return boolean
+	 */
+	public function hasPrevious(): bool
+	{
+		return $this->first > 1;
+	}
 
-    /**
-     * Checks to see if there is a "previous" page before our "first" page.
-     */
-    public function hasPrevious(): bool
-    {
-        return $this->first > 1;
-    }
+	//--------------------------------------------------------------------
 
-    /**
-     * Returns a URL to the "previous" page. The previous page is NOT the
-     * page before the current page, but is the page just before the
-     * "first" page.
-     *
-     * @return string|null
-     */
-    public function getPrevious()
-    {
-        if (! $this->hasPrevious()) {
-            return null;
-        }
+	/**
+	 * Returns a URL to the "previous" page. The previous page is NOT the
+	 * page before the current page, but is the page just before the
+	 * "first" page.
+	 *
+	 * You MUST call hasPrevious() first, or this value may be invalid.
+	 *
+	 * @return string|null
+	 */
+	public function getPrevious()
+	{
+		if (! $this->hasPrevious())
+		{
+			return null;
+		}
 
-        $uri = clone $this->uri;
+		$uri = clone $this->uri;
 
-        if ($this->segment === 0) {
-            $uri->addQuery($this->pageSelector, $this->first - 1);
-        } else {
-            $uri->setSegment($this->segment, $this->first - 1);
-        }
+		if ($this->segment === 0)
+		{
+			$uri->addQuery($this->pageSelector, $this->first - 1);
+		}
+		else
+		{
+			$uri->setSegment($this->segment, $this->first - 1);
+		}
 
-        return URI::createURIString(
-            $uri->getScheme(),
-            $uri->getAuthority(),
-            $uri->getPath(),
-            $uri->getQuery(),
-            $uri->getFragment(),
-        );
-    }
+		return (string) $uri;
+	}
 
-    /**
-     * Checks to see if there is a "next" page after our "last" page.
-     */
-    public function hasNext(): bool
-    {
-        return $this->pageCount > $this->last;
-    }
+	//--------------------------------------------------------------------
 
-    /**
-     * Returns a URL to the "next" page. The next page is NOT, the
-     * page after the current page, but is the page that follows the
-     * "last" page.
-     *
-     * @return string|null
-     */
-    public function getNext()
-    {
-        if (! $this->hasNext()) {
-            return null;
-        }
+	/**
+	 * Checks to see if there is a "next" page after our "last" page.
+	 *
+	 * @return boolean
+	 */
+	public function hasNext(): bool
+	{
+		return $this->pageCount > $this->last;
+	}
 
-        $uri = clone $this->uri;
+	//--------------------------------------------------------------------
 
-        if ($this->segment === 0) {
-            $uri->addQuery($this->pageSelector, $this->last + 1);
-        } else {
-            $uri->setSegment($this->segment, $this->last + 1);
-        }
+	/**
+	 * Returns a URL to the "next" page. The next page is NOT, the
+	 * page after the current page, but is the page that follows the
+	 * "last" page.
+	 *
+	 * You MUST call hasNext() first, or this value may be invalid.
+	 *
+	 * @return string|null
+	 */
+	public function getNext()
+	{
+		if (! $this->hasNext())
+		{
+			return null;
+		}
 
-        return URI::createURIString(
-            $uri->getScheme(),
-            $uri->getAuthority(),
-            $uri->getPath(),
-            $uri->getQuery(),
-            $uri->getFragment(),
-        );
-    }
+		$uri = clone $this->uri;
 
-    /**
-     * Returns the URI of the first page.
-     */
-    public function getFirst(): string
-    {
-        $uri = clone $this->uri;
+		if ($this->segment === 0)
+		{
+			$uri->addQuery($this->pageSelector, $this->last + 1);
+		}
+		else
+		{
+			$uri->setSegment($this->segment, $this->last + 1);
+		}
 
-        if ($this->segment === 0) {
-            $uri->addQuery($this->pageSelector, 1);
-        } else {
-            $uri->setSegment($this->segment, 1);
-        }
+		return (string) $uri;
+	}
 
-        return URI::createURIString(
-            $uri->getScheme(),
-            $uri->getAuthority(),
-            $uri->getPath(),
-            $uri->getQuery(),
-            $uri->getFragment(),
-        );
-    }
+	//--------------------------------------------------------------------
 
-    /**
-     * Returns the URI of the last page.
-     */
-    public function getLast(): string
-    {
-        $uri = clone $this->uri;
+	/**
+	 * Returns the URI of the first page.
+	 *
+	 * @return string
+	 */
+	public function getFirst(): string
+	{
+		$uri = clone $this->uri;
 
-        if ($this->segment === 0) {
-            $uri->addQuery($this->pageSelector, $this->pageCount);
-        } else {
-            $uri->setSegment($this->segment, $this->pageCount);
-        }
+		if ($this->segment === 0)
+		{
+			$uri->addQuery($this->pageSelector, 1);
+		}
+		else
+		{
+			$uri->setSegment($this->segment, 1);
+		}
 
-        return URI::createURIString(
-            $uri->getScheme(),
-            $uri->getAuthority(),
-            $uri->getPath(),
-            $uri->getQuery(),
-            $uri->getFragment(),
-        );
-    }
+		return (string) $uri;
+	}
 
-    /**
-     * Returns the URI of the current page.
-     */
-    public function getCurrent(): string
-    {
-        $uri = clone $this->uri;
+	//--------------------------------------------------------------------
 
-        if ($this->segment === 0) {
-            $uri->addQuery($this->pageSelector, $this->current);
-        } else {
-            $uri->setSegment($this->segment, $this->current);
-        }
+	/**
+	 * Returns the URI of the last page.
+	 *
+	 * @return string
+	 */
+	public function getLast(): string
+	{
+		$uri = clone $this->uri;
 
-        return URI::createURIString(
-            $uri->getScheme(),
-            $uri->getAuthority(),
-            $uri->getPath(),
-            $uri->getQuery(),
-            $uri->getFragment(),
-        );
-    }
+		if ($this->segment === 0)
+		{
+			$uri->addQuery($this->pageSelector, $this->pageCount);
+		}
+		else
+		{
+			$uri->setSegment($this->segment, $this->pageCount);
+		}
 
-    /**
-     * Returns an array of links that should be displayed. Each link
-     * is represented by another array containing of the URI the link
-     * should go to, the title (number) of the link, and a boolean
-     * value representing whether this link is active or not.
-     *
-     * @return list<array{uri:string, title:int, active:bool}>
-     */
-    public function links(): array
-    {
-        $links = [];
+		return (string) $uri;
+	}
 
-        $uri = clone $this->uri;
+	//--------------------------------------------------------------------
 
-        for ($i = $this->first; $i <= $this->last; $i++) {
-            $uri     = $this->segment === 0 ? $uri->addQuery($this->pageSelector, $i) : $uri->setSegment($this->segment, $i);
-            $links[] = [
-                'uri' => URI::createURIString(
-                    $uri->getScheme(),
-                    $uri->getAuthority(),
-                    $uri->getPath(),
-                    $uri->getQuery(),
-                    $uri->getFragment(),
-                ),
-                'title'  => $i,
-                'active' => ($i === $this->current),
-            ];
-        }
+	/**
+	 * Returns the URI of the current page.
+	 *
+	 * @return string
+	 */
+	public function getCurrent(): string
+	{
+		$uri = clone $this->uri;
 
-        return $links;
-    }
+		if ($this->segment === 0)
+		{
+			$uri->addQuery($this->pageSelector, $this->current);
+		}
+		else
+		{
+			$uri->setSegment($this->segment, $this->current);
+		}
 
-    /**
-     * Updates the first and last pages based on $surroundCount,
-     * which is the number of links surrounding the active page
-     * to show.
-     *
-     * @param int|null $count The new "surroundCount"
-     *
-     * @return void
-     */
-    protected function updatePages(?int $count = null)
-    {
-        if ($count === null) {
-            return;
-        }
+		return (string) $uri;
+	}
 
-        $this->first = $this->current - $count > 0 ? $this->current - $count : 1;
-        $this->last  = $this->current + $count <= $this->pageCount ? $this->current + $count : (int) $this->pageCount;
-    }
+	//--------------------------------------------------------------------
 
-    /**
-     * Updates the start and end items per pages, which is
-     * the number of items displayed on the active page.
-     */
-    protected function updatePerPages(): void
-    {
-        if ($this->total === null || $this->perPage === null) {
-            return;
-        }
+	/**
+	 * Returns an array of links that should be displayed. Each link
+	 * is represented by another array containing of the URI the link
+	 * should go to, the title (number) of the link, and a boolean
+	 * value representing whether this link is active or not.
+	 *
+	 * @return array
+	 */
+	public function links(): array
+	{
+		$links = [];
 
-        // When the page is the last, perform a different calculation.
-        if ($this->last === $this->current) {
-            $this->perPageStart = $this->perPage * ($this->current - 1) + 1;
-            $this->perPageEnd   = $this->total;
+		$uri = clone $this->uri;
 
-            return;
-        }
+		for ($i = $this->first; $i <= $this->last; $i ++)
+		{
+			$links[] = [
+				'uri'    => (string) ($this->segment === 0 ? $uri->addQuery($this->pageSelector, $i) : $uri->setSegment($this->segment, $i)),
+				'title'  => (int) $i,
+				'active' => ($i === $this->current),
+			];
+		}
 
-        $this->perPageStart = $this->current === 1 ? 1 : ($this->perPage * $this->current) - $this->perPage + 1;
-        $this->perPageEnd   = $this->perPage * $this->current;
-    }
+		return $links;
+	}
 
-    /**
-     * Checks to see if there is a "previous" page before our "first" page.
-     */
-    public function hasPreviousPage(): bool
-    {
-        return $this->current > 1;
-    }
+	//--------------------------------------------------------------------
 
-    /**
-     * Returns a URL to the "previous" page.
-     *
-     * You MUST call hasPreviousPage() first, or this value may be invalid.
-     *
-     * @return string|null
-     */
-    public function getPreviousPage()
-    {
-        if (! $this->hasPreviousPage()) {
-            return null;
-        }
+	/**
+	 * Updates the first and last pages based on $surroundCount,
+	 * which is the number of links surrounding the active page
+	 * to show.
+	 *
+	 * @param integer|null $count The new "surroundCount"
+	 */
+	protected function updatePages(int $count = null)
+	{
+		if (is_null($count))
+		{
+			return;
+		}
 
-        $uri = clone $this->uri;
+		$this->first = $this->current - $count > 0 ? (int) ($this->current - $count) : 1;
+		$this->last  = $this->current + $count <= $this->pageCount ? (int) ($this->current + $count) : (int) $this->pageCount;
+	}
 
-        if ($this->segment === 0) {
-            $uri->addQuery($this->pageSelector, $this->current - 1);
-        } else {
-            $uri->setSegment($this->segment, $this->current - 1);
-        }
+	//--------------------------------------------------------------------
 
-        return URI::createURIString(
-            $uri->getScheme(),
-            $uri->getAuthority(),
-            $uri->getPath(),
-            $uri->getQuery(),
-            $uri->getFragment(),
-        );
-    }
+	/**
+	 * Checks to see if there is a "previous" page before our "first" page.
+	 *
+	 * @return boolean
+	 */
+	public function hasPreviousPage(): bool
+	{
+		return $this->current > 1;
+	}
 
-    /**
-     * Checks to see if there is a "next" page after our "last" page.
-     */
-    public function hasNextPage(): bool
-    {
-        return $this->current < $this->last;
-    }
+	//--------------------------------------------------------------------
 
-    /**
-     * Returns a URL to the "next" page.
-     *
-     * You MUST call hasNextPage() first, or this value may be invalid.
-     *
-     * @return string|null
-     */
-    public function getNextPage()
-    {
-        if (! $this->hasNextPage()) {
-            return null;
-        }
+	/**
+	 * Returns a URL to the "previous" page.
+	 *
+	 * You MUST call hasPreviousPage() first, or this value may be invalid.
+	 *
+	 * @return string|null
+	 */
+	public function getPreviousPage()
+	{
+		if (! $this->hasPreviousPage())
+		{
+			return null;
+		}
 
-        $uri = clone $this->uri;
+		$uri = clone $this->uri;
 
-        if ($this->segment === 0) {
-            $uri->addQuery($this->pageSelector, $this->current + 1);
-        } else {
-            $uri->setSegment($this->segment, $this->current + 1);
-        }
+		if ($this->segment === 0)
+		{
+			$uri->addQuery($this->pageSelector, $this->current - 1);
+		}
+		else
+		{
+			$uri->setSegment($this->segment, $this->current - 1);
+		}
 
-        return URI::createURIString(
-            $uri->getScheme(),
-            $uri->getAuthority(),
-            $uri->getPath(),
-            $uri->getQuery(),
-            $uri->getFragment(),
-        );
-    }
+		return (string) $uri;
+	}
 
-    /**
-     * Returns the page number of the first page in the set of links to be displayed.
-     */
-    public function getFirstPageNumber(): int
-    {
-        return $this->first;
-    }
+	//--------------------------------------------------------------------
 
-    /**
-     * Returns the page number of the current page.
-     */
-    public function getCurrentPageNumber(): int
-    {
-        return $this->current;
-    }
+	/**
+	 * Checks to see if there is a "next" page after our "last" page.
+	 *
+	 * @return boolean
+	 */
+	public function hasNextPage(): bool
+	{
+		return $this->current < $this->last;
+	}
 
-    /**
-     * Returns the page number of the last page in the set of links to be displayed.
-     */
-    public function getLastPageNumber(): int
-    {
-        return $this->last;
-    }
+	//--------------------------------------------------------------------
 
-    /**
-     * Returns total number of pages.
-     */
-    public function getPageCount(): int
-    {
-        return $this->pageCount;
-    }
+	/**
+	 * Returns a URL to the "next" page.
+	 *
+	 * You MUST call hasNextPage() first, or this value may be invalid.
+	 *
+	 * @return string|null
+	 */
+	public function getNextPage()
+	{
+		if (! $this->hasNextPage())
+		{
+			return null;
+		}
 
-    /**
-     * Returns the previous page number.
-     */
-    public function getPreviousPageNumber(): ?int
-    {
-        return ($this->current === 1) ? null : $this->current - 1;
-    }
+		$uri = clone $this->uri;
 
-    /**
-     * Returns the next page number.
-     */
-    public function getNextPageNumber(): ?int
-    {
-        return ($this->current === $this->pageCount) ? null : $this->current + 1;
-    }
+		if ($this->segment === 0)
+		{
+			$uri->addQuery($this->pageSelector, $this->current + 1);
+		}
+		else
+		{
+			$uri->setSegment($this->segment, $this->current + 1);
+		}
 
-    /**
-     * Returns the total items of the page.
-     */
-    public function getTotal(): ?int
-    {
-        return $this->total;
-    }
+		return (string) $uri;
+	}
 
-    /**
-     * Returns the number of items to be displayed on the page.
-     */
-    public function getPerPage(): ?int
-    {
-        return $this->perPage;
-    }
+	/**
+	 * Returns the page number of the first page.
+	 *
+	 * @return integer
+	 */
+	public function getFirstPageNumber(): int
+	{
+		return $this->first;
+	}
 
-    /**
-     * Returns the number of items the page starts with.
-     */
-    public function getPerPageStart(): ?int
-    {
-        return $this->perPageStart;
-    }
+	/**
+	 * Returns the page number of the current page.
+	 *
+	 * @return integer
+	 */
+	public function getCurrentPageNumber(): int
+	{
+		return $this->current;
+	}
 
-    /**
-     * Returns the number of items the page ends with.
-     */
-    public function getPerPageEnd(): ?int
-    {
-        return $this->perPageEnd;
-    }
+	/**
+	 * Returns the page number of the last page.
+	 *
+	 * @return integer
+	 */
+	public function getLastPageNumber(): int
+	{
+		return $this->last;
+	}
+
+	/**
+	 * Returns the previous page number.
+	 *
+	 * @return integer|null
+	 */
+	public function getPreviousPageNumber(): ?int
+	{
+		return ($this->current === 1) ? null : $this->current - 1;
+	}
+
+	/**
+	 * Returns the next page number.
+	 *
+	 * @return integer|null
+	 */
+	public function getNextPageNumber(): ?int
+	{
+		return ($this->current === $this->pageCount) ? null : $this->current + 1;
+	}
 }

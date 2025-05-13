@@ -1,78 +1,131 @@
 <?php
 
-declare(strict_types=1);
-
 /**
- * This file is part of CodeIgniter 4 framework.
+ * This file is part of the CodeIgniter 4 framework.
  *
  * (c) CodeIgniter Foundation <admin@codeigniter.com>
  *
- * For the full copyright and license information, please view
- * the LICENSE file that was distributed with this source code.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace CodeIgniter\HTTP;
 
-use Config\App;
+use CodeIgniter\Validation\FormatRules;
 
 /**
- * Representation of an incoming, server-side HTTP request.
- *
- * @see \CodeIgniter\HTTP\RequestTest
+ * Representation of an HTTP request.
  */
-class Request extends OutgoingRequest implements RequestInterface
+class Request extends Message implements MessageInterface, RequestInterface
 {
-    use RequestTrait;
+	use RequestTrait;
 
-    /**
-     * Constructor.
-     *
-     * @param App $config
-     */
-    public function __construct($config = null)
-    {
-        $this->config = $config ?? config(App::class);
+	/**
+	 * Proxy IPs
+	 *
+	 * @var string|array
+	 *
+	 * @deprecated Check the App config directly
+	 */
+	protected $proxyIPs;
 
-        if (empty($this->method)) {
-            $this->method = $this->getServer('REQUEST_METHOD') ?? Method::GET;
-        }
+	/**
+	 * Request method.
+	 *
+	 * @var string
+	 */
+	protected $method;
 
-        if (empty($this->uri)) {
-            $this->uri = new URI();
-        }
-    }
+	/**
+	 * A URI instance.
+	 *
+	 * @var URI
+	 */
+	protected $uri;
 
-    /**
-     * Sets the request method. Used when spoofing the request.
-     *
-     * @return $this
-     *
-     * @deprecated 4.0.5 Use withMethod() instead for immutability
-     *
-     * @codeCoverageIgnore
-     */
-    public function setMethod(string $method)
-    {
-        $this->method = $method;
+	/**
+	 * Constructor.
+	 *
+	 * @param object $config
+	 *
+	 * @deprecated The $config is no longer needed and will be removed in a future version
+	 */
+	public function __construct($config = null)
+	{
+		/** @deprecated $this->proxyIps property will be removed in the future */
+		$this->proxyIPs = $config->proxyIPs;
 
-        return $this;
-    }
+		if (empty($this->method))
+		{
+			$this->method = $this->getServer('REQUEST_METHOD') ?? 'GET';
+		}
 
-    /**
-     * Returns an instance with the specified method.
-     *
-     * @param string $method
-     *
-     * @return static
-     */
-    public function withMethod($method)
-    {
-        $request = clone $this;
+		if (empty($this->uri))
+		{
+			$this->uri = new URI();
+		}
+	}
 
-        $request->method = $method;
+	/**
+	 * Validate an IP address
+	 *
+	 * @param string $ip    IP Address
+	 * @param string $which IP protocol: 'ipv4' or 'ipv6'
+	 *
+	 * @return boolean
+	 *
+	 * @deprecated Use Validation instead
+	 */
+	public function isValidIP(string $ip = null, string $which = null): bool
+	{
+		return (new FormatRules())->valid_ip($ip, $which);
+	}
 
-        return $request;
-    }
+	/**
+	 * Get the request method.
+	 *
+	 * @param boolean $upper Whether to return in upper or lower case.
+	 *
+	 * @return string
+	 *
+	 * @deprecated The $upper functionality will be removed and this will revert to its PSR-7 equivalent
+	 */
+	public function getMethod(bool $upper = false): string
+	{
+		return ($upper) ? strtoupper($this->method) : strtolower($this->method);
+	}
+
+	/**
+	 * Sets the request method. Used when spoofing the request.
+	 *
+	 * @param string $method
+	 *
+	 * @return Request
+	 *
+	 * @deprecated Use withMethod() instead for immutability
+	 */
+	public function setMethod(string $method)
+	{
+		$this->method = $method;
+
+		return $this;
+	}
+
+	/**
+	 * Returns an instance with the specified method.
+	 *
+	 * @param string $method
+	 *
+	 * @return static
+	 */
+	public function withMethod($method)
+	{
+		$request = clone $this;
+
+		$request->method = $method;
+
+		return $request;
+	}
 
     /**
      * Retrieves the URI instance.
@@ -80,7 +133,7 @@ class Request extends OutgoingRequest implements RequestInterface
      * @return URI
      */
     public function getUri()
-    {
-        return $this->uri;
-    }
+	{
+		return $this->uri;
+	}
 }

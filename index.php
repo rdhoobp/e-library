@@ -5,6 +5,6 @@
 		$uri = 'http://';
 	}
 	$uri .= $_SERVER['HTTP_HOST'];
-	header('Location: '.$uri.'/proyek_pweb/public/');
+	header('Location: '.$uri.'/e-library/public/');
 	exit;
 ?>

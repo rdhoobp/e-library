@@ -1,301 +1,328 @@
 <?php
 
-declare(strict_types=1);
-
 /**
- * This file is part of CodeIgniter 4 framework.
+ * This file is part of the CodeIgniter 4 framework.
  *
  * (c) CodeIgniter Foundation <admin@codeigniter.com>
  *
- * For the full copyright and license information, please view
- * the LICENSE file that was distributed with this source code.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace CodeIgniter\Language;
 
-use IntlException;
+use Config\Services;
 use MessageFormatter;
 
 /**
  * Handle system messages and localization.
  *
  * Locale-based, built on top of PHP internationalization.
- *
- * @see \CodeIgniter\Language\LanguageTest
  */
 class Language
 {
-    /**
-     * Stores the retrieved language lines
-     * from files for faster retrieval on
-     * second use.
-     *
-     * @var array
-     */
-    protected $language = [];
+	/**
+	 * Stores the retrieved language lines
+	 * from files for faster retrieval on
+	 * second use.
+	 *
+	 * @var array
+	 */
+	protected $language = [];
 
-    /**
-     * The current language/locale to work with.
-     *
-     * @var string
-     */
-    protected $locale;
+	/**
+	 * The current language/locale to work with.
+	 *
+	 * @var string
+	 */
+	protected $locale;
 
-    /**
-     * Boolean value whether the intl
-     * libraries exist on the system.
-     *
-     * @var bool
-     */
-    protected $intlSupport = false;
+	/**
+	 * Boolean value whether the intl
+	 * libraries exist on the system.
+	 *
+	 * @var boolean
+	 */
+	protected $intlSupport = false;
 
-    /**
-     * Stores filenames that have been
-     * loaded so that we don't load them again.
-     *
-     * @var array
-     */
-    protected $loadedFiles = [];
+	/**
+	 * Stores filenames that have been
+	 * loaded so that we don't load them again.
+	 *
+	 * @var array
+	 */
+	protected $loadedFiles = [];
 
-    public function __construct(string $locale)
-    {
-        $this->locale = $locale;
+	//--------------------------------------------------------------------
 
-        if (class_exists(MessageFormatter::class)) {
-            $this->intlSupport = true;
-        }
-    }
+	public function __construct(string $locale)
+	{
+		$this->locale = $locale;
 
-    /**
-     * Sets the current locale to use when performing string lookups.
-     *
-     * @return $this
-     */
-    public function setLocale(?string $locale = null)
-    {
-        if ($locale !== null) {
-            $this->locale = $locale;
-        }
+		if (class_exists('MessageFormatter'))
+		{
+			$this->intlSupport = true;
+		}
+	}
 
-        return $this;
-    }
+	//--------------------------------------------------------------------
 
-    public function getLocale(): string
-    {
-        return $this->locale;
-    }
+	/**
+	 * Sets the current locale to use when performing string lookups.
+	 *
+	 * @param string $locale
+	 *
+	 * @return $this
+	 */
+	public function setLocale(string $locale = null)
+	{
+		if (! is_null($locale))
+		{
+			$this->locale = $locale;
+		}
 
-    /**
-     * Parses the language string for a file, loads the file, if necessary,
-     * getting the line.
-     *
-     * @return list<string>|string
-     */
-    public function getLine(string $line, array $args = [])
-    {
-        // if no file is given, just parse the line
-        if (! str_contains($line, '.')) {
-            return $this->formatMessage($line, $args);
-        }
+		return $this;
+	}
 
-        // Parse out the file name and the actual alias.
-        // Will load the language file and strings.
-        [$file, $parsedLine] = $this->parseLine($line, $this->locale);
+	//--------------------------------------------------------------------
 
-        $output = $this->getTranslationOutput($this->locale, $file, $parsedLine);
+	/**
+	 * @return string
+	 */
+	public function getLocale(): string
+	{
+		return $this->locale;
+	}
 
-        if ($output === null && strpos($this->locale, '-')) {
-            [$locale] = explode('-', $this->locale, 2);
+	//--------------------------------------------------------------------
 
-            [$file, $parsedLine] = $this->parseLine($line, $locale);
+	/**
+	 * Parses the language string for a file, loads the file, if necessary,
+	 * getting the line.
+	 *
+	 * @param string $line Line.
+	 * @param array  $args Arguments.
+	 *
+	 * @return string|string[] Returns line.
+	 */
+	public function getLine(string $line, array $args = [])
+	{
+		// if no file is given, just parse the line
+		if (strpos($line, '.') === false)
+		{
+			return $this->formatMessage($line, $args);
+		}
 
-            $output = $this->getTranslationOutput($locale, $file, $parsedLine);
-        }
+		// Parse out the file name and the actual alias.
+		// Will load the language file and strings.
+		list($file, $parsedLine) = $this->parseLine($line, $this->locale);
 
-        // if still not found, try English
-        if ($output === null) {
-            [$file, $parsedLine] = $this->parseLine($line, 'en');
+		$output = $this->getTranslationOutput($this->locale, $file, $parsedLine);
 
-            $output = $this->getTranslationOutput('en', $file, $parsedLine);
-        }
+		if ($output === null && strpos($this->locale, '-'))
+		{
+			list($locale) = explode('-', $this->locale, 2);
 
-        $output ??= $line;
+			list($file, $parsedLine) = $this->parseLine($line, $locale);
 
-        return $this->formatMessage($output, $args);
-    }
+			$output = $this->getTranslationOutput($locale, $file, $parsedLine);
+		}
 
-    /**
-     * @return array|string|null
-     */
-    protected function getTranslationOutput(string $locale, string $file, string $parsedLine)
-    {
-        $output = $this->language[$locale][$file][$parsedLine] ?? null;
-        if ($output !== null) {
-            return $output;
-        }
+		// if still not found, try English
+		if ($output === null)
+		{
+			list($file, $parsedLine) = $this->parseLine($line, 'en');
 
-        foreach (explode('.', $parsedLine) as $row) {
-            if (! isset($current)) {
-                $current = $this->language[$locale][$file] ?? null;
-            }
+			$output = $this->getTranslationOutput('en', $file, $parsedLine);
+		}
 
-            $output = $current[$row] ?? null;
-            if (is_array($output)) {
-                $current = $output;
-            }
-        }
+		$output = $output ?? $line;
 
-        if ($output !== null) {
-            return $output;
-        }
+		return $this->formatMessage($output, $args);
+	}
 
-        $row = current(explode('.', $parsedLine));
-        $key = substr($parsedLine, strlen($row) + 1);
+	//--------------------------------------------------------------------
 
-        return $this->language[$locale][$file][$row][$key] ?? null;
-    }
+	/**
+	 * @return array|string|null
+	 */
+	private function getTranslationOutput(string $locale, string $file, string $parsedLine)
+	{
+		$output = $this->language[$locale][$file][$parsedLine] ?? null;
+		if ($output !== null)
+		{
+			return $output;
+		}
 
-    /**
-     * Parses the language string which should include the
-     * filename as the first segment (separated by period).
-     */
-    protected function parseLine(string $line, string $locale): array
-    {
-        $file = substr($line, 0, strpos($line, '.'));
-        $line = substr($line, strlen($file) + 1);
+		foreach (explode('.', $parsedLine) as $row)
+		{
+			if (! isset($current))
+			{
+				$current = $this->language[$locale][$file] ?? null;
+			}
 
-        if (! isset($this->language[$locale][$file]) || ! array_key_exists($line, $this->language[$locale][$file])) {
-            $this->load($file, $locale);
-        }
+			$output = $current[$row] ?? null;
+			if (is_array($output))
+			{
+				$current = $output;
+			}
+		}
 
-        return [$file, $line];
-    }
+		if ($output !== null)
+		{
+			return $output;
+		}
 
-    /**
-     * Advanced message formatting.
-     *
-     * @param array|string $message
-     * @param list<string> $args
-     *
-     * @return array|string
-     */
-    protected function formatMessage($message, array $args = [])
-    {
-        if (! $this->intlSupport || $args === []) {
-            return $message;
-        }
+		$row = current(explode('.', $parsedLine));
+		$key = substr($parsedLine, strlen($row) + 1);
 
-        if (is_array($message)) {
-            foreach ($message as $index => $value) {
-                $message[$index] = $this->formatMessage($value, $args);
-            }
+		return $this->language[$locale][$file][$row][$key] ?? null;
+	}
 
-            return $message;
-        }
+	/**
+	 * Parses the language string which should include the
+	 * filename as the first segment (separated by period).
+	 *
+	 * @param string $line
+	 * @param string $locale
+	 *
+	 * @return array
+	 */
+	protected function parseLine(string $line, string $locale): array
+	{
+		$file = substr($line, 0, strpos($line, '.'));
+		$line = substr($line, strlen($file) + 1);
 
-        $formatted = MessageFormatter::formatMessage($this->locale, $message, $args);
-        if ($formatted === false) {
-            // Format again to get the error message.
-            try {
-                $fmt       = new MessageFormatter($this->locale, $message);
-                $formatted = $fmt->format($args);
-                $fmtError  = '"' . $fmt->getErrorMessage() . '" (' . $fmt->getErrorCode() . ')';
-            } catch (IntlException $e) {
-                $fmtError = '"' . $e->getMessage() . '" (' . $e->getCode() . ')';
-            }
+		if (! isset($this->language[$locale][$file]) || ! array_key_exists($line, $this->language[$locale][$file]))
+		{
+			$this->load($file, $locale);
+		}
 
-            $argsString = implode(
-                ', ',
-                array_map(static fn ($element): string => '"' . $element . '"', $args),
-            );
-            $argsUrlEncoded = implode(
-                ', ',
-                array_map(static fn ($element): string => '"' . rawurlencode($element) . '"', $args),
-            );
+		return [
+			$file,
+			$line,
+		];
+	}
 
-            log_message(
-                'error',
-                'Language.invalidMessageFormat: $message: "' . $message
-                . '", $args: ' . $argsString
-                . ' (urlencoded: ' . $argsUrlEncoded . '),'
-                . ' MessageFormatter Error: ' . $fmtError,
-            );
+	//--------------------------------------------------------------------
 
-            return $message . "\n【Warning】Also, invalid string(s) was passed to the Language class. See log file for details.";
-        }
+	/**
+	 * Advanced message formatting.
+	 *
+	 * @param string|array $message Message.
+	 * @param array	       $args    Arguments.
+	 *
+	 * @return string|array Returns formatted message.
+	 */
+	protected function formatMessage($message, array $args = [])
+	{
+		if (! $this->intlSupport || $args === [])
+		{
+			return $message;
+		}
 
-        return $formatted;
-    }
+		if (is_array($message))
+		{
+			foreach ($message as $index => $value)
+			{
+				$message[$index] = $this->formatMessage($value, $args);
+			}
 
-    /**
-     * Loads a language file in the current locale. If $return is true,
-     * will return the file's contents, otherwise will merge with
-     * the existing language lines.
-     *
-     * @return list<mixed>|null
-     */
-    protected function load(string $file, string $locale, bool $return = false)
-    {
-        if (! array_key_exists($locale, $this->loadedFiles)) {
-            $this->loadedFiles[$locale] = [];
-        }
+			return $message;
+		}
 
-        if (in_array($file, $this->loadedFiles[$locale], true)) {
-            // Don't load it more than once.
-            return [];
-        }
+		return MessageFormatter::formatMessage($this->locale, $message, $args);
+	}
 
-        if (! array_key_exists($locale, $this->language)) {
-            $this->language[$locale] = [];
-        }
+	//--------------------------------------------------------------------
 
-        if (! array_key_exists($file, $this->language[$locale])) {
-            $this->language[$locale][$file] = [];
-        }
+	/**
+	 * Loads a language file in the current locale. If $return is true,
+	 * will return the file's contents, otherwise will merge with
+	 * the existing language lines.
+	 *
+	 * @param string  $file
+	 * @param string  $locale
+	 * @param boolean $return
+	 *
+	 * @return void|array
+	 */
+	protected function load(string $file, string $locale, bool $return = false)
+	{
+		if (! array_key_exists($locale, $this->loadedFiles))
+		{
+			$this->loadedFiles[$locale] = [];
+		}
 
-        $path = "Language/{$locale}/{$file}.php";
+		if (in_array($file, $this->loadedFiles[$locale], true))
+		{
+			// Don't load it more than once.
+			return [];
+		}
 
-        $lang = $this->requireFile($path);
+		if (! array_key_exists($locale, $this->language))
+		{
+			$this->language[$locale] = [];
+		}
 
-        if ($return) {
-            return $lang;
-        }
+		if (! array_key_exists($file, $this->language[$locale]))
+		{
+			$this->language[$locale][$file] = [];
+		}
 
-        $this->loadedFiles[$locale][] = $file;
+		$path = "Language/{$locale}/{$file}.php";
 
-        // Merge our string
-        $this->language[$locale][$file] = $lang;
+		$lang = $this->requireFile($path);
 
-        return null;
-    }
+		if ($return)
+		{
+			return $lang;
+		}
 
-    /**
-     * A simple method for including files that can be
-     * overridden during testing.
-     */
-    protected function requireFile(string $path): array
-    {
-        $files   = service('locator')->search($path, 'php', false);
-        $strings = [];
+		$this->loadedFiles[$locale][] = $file;
 
-        foreach ($files as $file) {
-            // On some OS's we were seeing failures
-            // on this command returning boolean instead
-            // of array during testing, so we've removed
-            // the require_once for now.
-            if (is_file($file)) {
-                $strings[] = require $file;
-            }
-        }
+		// Merge our string
+		$this->language[$locale][$file] = $lang;
+	}
 
-        if (isset($strings[1])) {
-            $string = array_shift($strings);
+	//--------------------------------------------------------------------
 
-            $strings = array_replace_recursive($string, ...$strings);
-        } elseif (isset($strings[0])) {
-            $strings = $strings[0];
-        }
+	/**
+	 * A simple method for including files that can be
+	 * overridden during testing.
+	 *
+	 * @param string $path
+	 *
+	 * @return array
+	 */
+	protected function requireFile(string $path): array
+	{
+		$files   = Services::locator()->search($path, 'php', false);
+		$strings = [];
 
-        return $strings;
-    }
+		foreach ($files as $file)
+		{
+			// On some OS's we were seeing failures
+			// on this command returning boolean instead
+			// of array during testing, so we've removed
+			// the require_once for now.
+			if (is_file($file))
+			{
+				$strings[] = require $file;
+			}
+		}
+
+		if (isset($strings[1]))
+		{
+			$strings = array_replace_recursive(...$strings);
+		}
+		elseif (isset($strings[0]))
+		{
+			$strings = $strings[0];
+		}
+
+		return $strings;
+	}
+
+	//--------------------------------------------------------------------
 }

@@ -1,14 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 /**
- * This file is part of CodeIgniter 4 framework.
+ * This file is part of the CodeIgniter 4 framework.
  *
  * (c) CodeIgniter Foundation <admin@codeigniter.com>
  *
- * For the full copyright and license information, please view
- * the LICENSE file that was distributed with this source code.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace CodeIgniter\Test\Mock;
@@ -18,29 +16,20 @@ use CodeIgniter\RESTful\ResourcePresenter;
 
 class MockResourcePresenter extends ResourcePresenter
 {
-    use ResponseTrait;
+	use ResponseTrait;
 
-    /**
-     * @return object|null
-     */
-    public function getModel()
-    {
-        return $this->model;
-    }
+	public function getModel()
+	{
+		return $this->model;
+	}
 
-    /**
-     * @return class-string|null
-     */
-    public function getModelName()
-    {
-        return $this->modelName;
-    }
+	public function getModelName()
+	{
+		return $this->modelName;
+	}
 
-    /**
-     * @return 'json'|'xml'|null
-     */
-    public function getFormat()
-    {
-        return $this->format;
-    }
+	public function getFormat()
+	{
+		return $this->format;
+	}
 }
