@@ -1752,7 +1752,7 @@ img.post-image {
 .action-menu .search-bar {
   overflow: hidden;
 }
-
+.user-sub-menu,
 .action-menu .search-bar,
 .action-menu .open-icon-wrap {
   width: 40px;

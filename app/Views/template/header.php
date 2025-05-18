@@ -65,6 +65,19 @@
 											</div>
 										</div>
 									</li>
+									<li class="menu-item has-sub">
+										<div class="action-menu">
+											<div class="user-sub-menu">
+												<a href="#" class="search-button search-toggle" >
+													<i class="icon icon-user"style="color:rgb(61, 57, 53);"></i>
+												</a>
+											</div>
+										</div>
+										<ul style ="background-color:rgb(61, 57, 53);">
+											<li><a href="<?= base_url('login') ?>">Login</a></li>
+											<li><a href="<?= base_url('register') ?>">Register</a></li>
+										</ul>
+									</li>	
 								</ul>
 								<div class="hamburger">
 									<span class="bar"></span>

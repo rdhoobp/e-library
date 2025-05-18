@@ -8,4 +8,12 @@ class Home extends BaseController
 	{
 		return view('tampilan/main_page');
 	}
+	public function login()
+	{
+		return view('tampilan/login.php');
+	}
+	public function register()
+	{
+		return view('tampilan/register.php');
+	}
 }
