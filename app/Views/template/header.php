@@ -2,7 +2,8 @@
 <html lang="en">
 
 <head>
-	<title>BookSaw - Free Book Store HTML CSS Template</title>
+	<link rel="icon" href="<?= base_url("asset/images/icon-title.png") ?>" type="image/x-icon">
+	<title>E-Lib</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,7 +32,9 @@
 
 					<div class="col-md-2">
 						<div class="main-logo">
-							<a href="index.html"><img src="<?= base_url("asset/images/main-logo.png") ?>" alt="logo"></a>
+							<a href="index.html">
+								<img src="<?= base_url("asset/images/icon-light.png") ?>" alt="logo">
+							</a>
 						</div>
 
 					</div>
@@ -65,7 +68,7 @@
 											</div>
 										</div>
 									</li>
-									<li class="menu-item has-sub">
+									<li class="menu-item has-sub" style="margin-left: 10px; margin-right: 20%;">
 										<div class="action-menu">
 											<div class="user-sub-menu">
 												<a href="#" class="search-button search-toggle" >
@@ -73,7 +76,7 @@
 												</a>
 											</div>
 										</div>
-										<ul style ="background-color:rgb(61, 57, 53);">
+										<ul style ="background-color:rgb(61, 57, 53); margin-left=100px;">
 											<li><a href="<?= base_url('login') ?>">Login</a></li>
 											<li><a href="<?= base_url('register') ?>">Register</a></li>
 										</ul>

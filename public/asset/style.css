@@ -1791,6 +1791,13 @@ img.post-image {
   background: #efeee8;
 }
 
+#header-wrap a img{
+  margin-left: 70%;
+  width: 140px;
+  height: 40px;
+  object-fit: cover;
+}
+
 .action-menu .side-nav-bar .menu-btn a,
 .action-menu .searchbar a {
   color: #000;
@@ -2310,6 +2317,9 @@ footer#footer {
 }
 
 #footer .footer-item img.footer-logo {
+  width: 230px;
+  height: 70px;
+  object-fit: cover;
   margin-bottom: 40px;
 }
 
