@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-	<link rel="icon" href="<?= base_url("asset/images/icon-title.png") ?>" type="image/x-icon">
+	<link rel="icon" href="<?= base_url("asset/frontend/images/icon-title.png") ?>" type="image/x-icon">
 	<title>E-Lib</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,10 +16,10 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
 		integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
-	<link rel="stylesheet" type="text/css" href="<?= base_url("asset/css/normalize.css")?>">
-	<link rel="stylesheet" type="text/css" href="<?= base_url("asset/icomoon/icomoon.css") ?>">
-	<link rel="stylesheet" type="text/css" href="<?= base_url("asset/css/vendor.css") ?>">
-	<link rel="stylesheet" type="text/css" href="<?= base_url("asset/style.css") ?>">
+	<link rel="stylesheet" type="text/css" href="<?= base_url("asset/frontend/css/normalize.css")?>">
+	<link rel="stylesheet" type="text/css" href="<?= base_url("asset/frontend/icomoon/icomoon.css") ?>">
+	<link rel="stylesheet" type="text/css" href="<?= base_url("asset/frontend/css/vendor.css") ?>">
+	<link rel="stylesheet" type="text/css" href="<?= base_url("asset/frontend/style.css") ?>">
 
 </head>
 
@@ -33,7 +33,7 @@
 					<div class="col-md-2">
 						<div class="main-logo">
 							<a href="index.html">
-								<img src="<?= base_url("asset/images/icon-light.png") ?>" alt="logo">
+								<img src="<?= base_url("asset/frontend/images/icon-light.png") ?>" alt="logo">
 							</a>
 						</div>
 

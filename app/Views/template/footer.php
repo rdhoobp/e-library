@@ -6,7 +6,7 @@
 
 					<div class="footer-item">
 						<div class="company-brand">
-							<img src="<?= base_url("asset/images/icon-dark.png") ?>" alt="logo" class="footer-logo">
+							<img src="<?= base_url("asset/frontend/images/icon-dark.png") ?>" alt="logo" class="footer-logo">
 							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sagittis sed ptibus liberolectus
 								nonet psryroin. Amet sed lorem posuere sit iaculis amet, ac urna. Adipiscing fames
 								semper erat ac in suspendisse iaculis.</p>
@@ -115,12 +115,12 @@
 		</div>
 	</div>
 
-	<script src="<?= base_url("asset/js/jquery-1.11.0.min.js") ?>"></script>
+	<script src="<?= base_url("asset/frontend/js/jquery-1.11.0.min.js") ?>"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
 		crossorigin="anonymous"></script>
-	<script src="<?= base_url("asset/js/plugins.js") ?>"></script>
-	<script src="<?= base_url("asset/js/script.js") ?>"></script>
+	<script src="<?= base_url("asset/frontend/js/plugins.js") ?>"></script>
+	<script src="<?= base_url("asset/frontend/js/script.js") ?>"></script>
 
 </body>
 
