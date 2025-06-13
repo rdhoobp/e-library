@@ -1858,6 +1858,11 @@ img.post-image {
   justify-content: center;
 }
 
+.main-slider img {
+  width: auto;
+  height: 555px;
+}
+
 .main-slider .banner-content {
   width: 35%;
   margin-top: 60px;
