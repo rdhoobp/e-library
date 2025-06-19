@@ -76,7 +76,7 @@
 												</a>
 											</div>
 										</div>
-										<ul style ="background-color:rgb(61, 57, 53); margin-left=100px;">
+										<ul style ="background-color:rgb(61, 57, 53);">
 											<li><a href="<?= base_url('login') ?>">Login</a></li>
 											<li><a href="<?= base_url('register') ?>">Register</a></li>
 										</ul>

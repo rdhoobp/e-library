@@ -1,4 +1,4 @@
-    <?= view('template/header.php') ?>
+<?= view('template/header.php') ?>
     <section class="bg-primary py-3 py-md-5 py-xl-8">
     <div class="container">
         <div class="row gy-4 align-items-center">
@@ -15,6 +15,17 @@
         <div class="col-12 col-md-6 col-xl-5">
             <div class="card border-0 rounded-4">
             <div class="card-body p-3 p-md-4 p-xl-5">
+                <?php
+                        if(session()->get("success")){?>
+                            <div class="col-12"style="background-color:lightgreen;text-align:center;">
+                                <?= session()->get("success")?>
+                            </div>
+                        <?php }if(!empty(session()->get("error"))) { ?>
+                            <div class="col-12 is-invalid"style="background-color:red;text-align:center;color:white">
+                                <?= session()->get("error") ?>
+                            </div>
+                        <?php }
+                    ?>
                 <div class="mb-4">
                 <h3>Sign in</h3>
                 <p>Don't have an account? <a href="<?= base_url('register') ?>">Sign up</a></p>

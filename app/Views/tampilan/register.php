@@ -1,4 +1,5 @@
-    <?= view('template/header.php') ?>
+<?= view('template/header.php') ?>
+<?php $validation = \Config\Services::validation();?>
     <section class="bg-primary py-3 py-md-5 py-xl-8">
     <div class="container">
         <div class="row gy-4 align-items-center">
@@ -16,6 +17,19 @@
             <div class="card border-0 rounded-4">
             <div class="card-body p-3 p-md-4 p-xl-5">
                 <div class="row">
+                    <?php
+                        if(session()->get("success")){?>
+                            <div class="col-12"style="background-color:lightgreen;text-align:center;">
+                                <?= session()->get("success")?>
+                            </div>
+                        <?php }if(!empty($validation->getErrors())) { ?>
+                            <div class="col-12 is-invalid"style="background-color:red;text-align:center;color:white">
+                                <?php foreach($validation->getErrors() as $error) : ?>
+                                    <?= $error; ?>
+                                <?php endforeach ?>
+                            </div>
+                        <?php }
+                    ?>
                 <div class="col-12">
                     <div class="mb-4">
                     <h3>Register</h3>
@@ -29,6 +43,12 @@
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="name" id="name" placeholder="Your Name" required>
                         <label for="name">Full Name</label>
+                    </div>
+                    </div>
+                    <div class="col-12">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="username" id="username" placeholder="Your Username" required>
+                        <label for="username">Username</label>
                     </div>
                     </div>
                     <div class="col-12">
