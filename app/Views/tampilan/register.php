@@ -1,14 +1,14 @@
 <?= view('template/header.php') ?>
 <?php $validation = \Config\Services::validation();?>
-    <section class="bg-primary py-3 py-md-5 py-xl-8">
+    <section class="background-login py-3 py-md-5 py-xl-8">
     <div class="container">
         <div class="row gy-4 align-items-center">
         <div class="col-12 col-md-6 col-xl-7">
-            <div class="d-flex justify-content-center text-bg-primary">
+            <div class="d-flex justify-content-center text">
             <div class="col-12 col-xl-9">
-                <img class="img-fluid rounded mb-4" loading="lazy" src="<?= base_url("asset/frontend/images/icon-light.png") ?>" width="250" height="200" alt="BootstrapBrain Logo">
+                <img class="img-fluid rounded mb-4" loading="lazy" src="<?= base_url("asset/frontend/images/icon-dark.png") ?>" width="250" height="200" alt="BootstrapBrain Logo">
                 <hr class="border-primary-subtle mb-4">
-                <h2 class="h1 mb-4">Daftar Sekarang!</h2>
+                <h2 class="text-black h1 mb-4">Daftar Sekarang!</h2>
                 <p class="lead mb-5">Buat akun baru untuk mulai menggunakan layanan kami.</p>
             </div>
             </div>

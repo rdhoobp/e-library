@@ -67,14 +67,14 @@
 							<div class="col-md-3">
 								<div class="product-item">
 									<figure class="product-style">
-										<img src="images/product-item1.jpg" alt="Books" class="product-item">
+										<img src="<?= base_url("asset/img/book_cover/Sejarah-Dunia-yang-Disembunyikan.jpg")?>" alt="Books" class="product-item">
 										<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
 											Cart</button>
 									</figure>
 									<figcaption>
-										<h3>Simple way of piece life</h3>
-										<span>Armor Ramsey</span>
-										<div class="item-price">$ 40.00</div>
+										<h3>Sejarah Dunia Yang Disembuntikan</h3>
+										<span>Jonathan Black</span>
+										<div class="item-price">Rp. 119.000</div>
 									</figcaption>
 								</div>
 							</div>
@@ -82,13 +82,13 @@
 							<div class="col-md-3">
 								<div class="product-item">
 									<figure class="product-style">
-										<img src="images/product-item2.jpg" alt="Books" class="product-item">
+										<img src="<?= base_url("asset/img/book_cover/madillog-tan-malaka.jpg"); ?>" alt="Books" class="product-item">
 										<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
 											Cart</button>
 									</figure>
 									<figcaption>
-										<h3>Great travel at desert</h3>
-										<span>Sanchit Howdy</span>
+										<h3>Madilog</h3>
+										<span>Tan Malaka</span>
 										<div class="item-price">$ 38.00</div>
 									</figcaption>
 								</div>

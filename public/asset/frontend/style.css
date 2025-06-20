@@ -2214,6 +2214,7 @@ span.prev-price {
 /*----- Latest Blog Section
 --------------------------------------------------------------*/
 #latest-blog {
+  margin: 0px;
 }
 
 #latest-blog article.column {
@@ -2390,7 +2391,10 @@ footer#footer {
   border: 1px solid #EAE8DF;
   padding: 15%;
   cursor: pointer;
-  width: 100%;
+  width: 400px;
+  height: 380px;
+  object-fit: fill;
+  /* height: ; */
 }
 
 .product-style button.add-to-cart {
@@ -2435,14 +2439,19 @@ footer#footer {
   font-size: 1.3em;
 }
 
+.background-login {
+  background-color: #ebd9c6;
+}
+
 @media screen and (max-width: 768px) {
   .products-grid .product-item {
     width: 45%;
   }
 
   .product-style img.product-item {
-    /*height: 550px;*/
-    object-fit: contain;
+    height: 550px;
+    /* width: 100px; */
+    object-fit: fill;
     margin: 0 auto;
   }
 
