@@ -2440,7 +2440,12 @@ footer#footer {
 }
 
 .background-login {
-  background-color: #ebd9c6;
+  background-image: url('../img/others/banner1.jpg ?>');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #ffffff;
+  min-height: 100vh;
 }
 
 @media screen and (max-width: 768px) {
