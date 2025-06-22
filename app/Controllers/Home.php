@@ -38,6 +38,11 @@ class Home extends BaseController
 	public function userupdate(){
 
 	}
+	public function session_terminate(){
+		$session = session();
+		$session->destroy();
+		return redirect()->to(base_url(''));
+	}
 	public function passwordupdate(){
 		$model = new UserModel();
 		$email = $this->request->getVar('email');
@@ -64,10 +69,11 @@ class Home extends BaseController
 		if(!$validate){
 			return redirect()->back()->withInput();
 		}
-		$data['data'] = $model->where('email',$email)->first();
-		$model->update($email,[
-			"password" => $this->request->getVar('password')
-		]);
+		$password = password_hash($this->request->getVar('password'),PASSWORD_DEFAULT);
+		
+		$model->where('email',$email)->set([
+			'password' => $password
+		])->update();
 		session()->setFlashdata("success","Password Berhasil Di ganti!");
 		return redirect()->back();
 	}

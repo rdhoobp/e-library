@@ -81,6 +81,7 @@
 												if(session('id') != null){?>
 													<li><a href="<?= base_url('user/settings/'.session('id')) ?>">Settings</a></li>
 													<li><a href="<?= base_url('forgot-password') ?>">Change Password</a></li>
+													<li><a href="<?= base_url('logout') ?>">Log Out</a></li>
 												<?php }else{?>
 													<li><a href="<?= base_url('login') ?>">Login</a></li>
 													<li><a href="<?= base_url('register') ?>">Register</a></li>
