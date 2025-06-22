@@ -41,7 +41,34 @@ class Home extends BaseController
 	public function passwordupdate(){
 		$model = new UserModel();
 		$email = $this->request->getVar('email');
+		$validate = $this->validate([
+				'email' => [
+					'rules' => 'required',
+					'errors' => [
+						'required' => 'Kolom Email Harus Di isi!!!',
+					]
+				],
+				'password' => [
+					'rules' => 'required|min_length[8]',
+					'errors' => [
+						'min_length' => 'Password yang dimasukan terlalu pendek!! Minimal terdapat 8 kata'
+					]
+				],
+				'password_confirm'=>[
+					'rules' => 'required|matches[password]',
+					'errors' => [
+						'matches' => 'Password yang anda masukkan tidak sama!!'
+					]
+				]
+			]);
+		if(!$validate){
+			return redirect()->back()->withInput();
+		}
 		$data['data'] = $model->where('email',$email)->first();
-		var_dump($data['data']);exit;
+		$model->update($email,[
+			"password" => $this->request->getVar('password')
+		]);
+		session()->setFlashdata("success","Password Berhasil Di ganti!");
+		return redirect()->back();
 	}
 }

@@ -88,9 +88,9 @@ class Auth extends BaseController
 					]
 				]
 			]);
-			if(!$validate){
-				return redirect()->back()->withInput();
-			}
+		if(!$validate){
+			return redirect()->back()->withInput();
+		}
 		$data = $this->request->getPost(['name','username','email','password']);
 		$save = $this->model->save($data);
 		if($save){
