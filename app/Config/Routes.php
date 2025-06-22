@@ -37,7 +37,10 @@ $routes->get('/login','Home::login');
 $routes->get('/register','Home::register');
 $routes->post('/login/submit','Auth::auth');
 $routes->post('/register/submit','Auth::register_submit');
-
+$routes->get('/user/settings/(:num)','Home::usersetting/$1');
+$routes->post('/user/settings/update','Home::userupdate');
+$routes->get('/forgot-password','Home::change_password');
+$routes->post('/user/password/update','Home::passwordupdate');
 /*
  * --------------------------------------------------------------------
  * Additional Routing

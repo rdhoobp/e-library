@@ -77,8 +77,15 @@
 											</div>
 										</div>
 										<ul style ="background-color:rgb(61, 57, 53);">
-											<li><a href="<?= base_url('login') ?>">Login</a></li>
-											<li><a href="<?= base_url('register') ?>">Register</a></li>
+											<?php
+												if(session('id') != null){?>
+													<li><a href="<?= base_url('user/settings/'.session('id')) ?>">Settings</a></li>
+													<li><a href="<?= base_url('forgot-password') ?>">Change Password</a></li>
+												<?php }else{?>
+													<li><a href="<?= base_url('login') ?>">Login</a></li>
+													<li><a href="<?= base_url('register') ?>">Register</a></li>
+												<?php }
+											?>
 										</ul>
 									</li>	
 								</ul>
