@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Controllers;
+
 use App\Models\UserModel;
+
 class Home extends BaseController
 {
 	public function index()
@@ -16,29 +18,29 @@ class Home extends BaseController
 	{
 		return view('tampilan/register.php');
 	}
-	public function user_add(){
-		return view('admin/add_user.php');
-	}
-	public function usersetting($id){
-		if(session('id')!=$id){
-			echo"ID tidak sesuai";exit;
-		}else{
+	public function usersetting($id)
+	{
+		if (session('id') != $id) {
+			echo "ID tidak sesuai";
+			exit;
+		} else {
 			$model = new UserModel();
-			$data['data'] = $model->where('id_user',$id)->first();
-			return view('tampilan/user_setting.php',$data);
+			$data['data'] = $model->where('id_user', $id)->first();
+			return view('tampilan/user_setting.php', $data);
 		}
 	}
-	public function change_password(){
+	public function change_password()
+	{
 		$model = new UserModel();
-		if(session('id')!=null){
-			$data['data'] = $model->where('id_user',session('id'))->first();
-			
-		}else{
+		if (session('id') != null) {
+			$data['data'] = $model->where('id_user', session('id'))->first();
+		} else {
 			$data['data'] = null;
 		}
-		return view('tampilan/change_password.php',$data);
+		return view('tampilan/change_password.php', $data);
 	}
-	public function userupdate(){
+	public function userupdate()
+	{
 		$model = new UserModel();
 		$id = $this->request->getVar('id');
 		$validate = $this->validate([
@@ -56,50 +58,53 @@ class Home extends BaseController
 				]
 			]
 		]);
-		if(!$validate){
+		if (!$validate) {
 			return redirect()->back()->withInput();
 		}
 	}
-	public function session_terminate(){
+	public function session_terminate()
+	{
 		$session = session();
 		$session->destroy();
 		return redirect()->to(base_url(''));
 	}
-	public function book_detail(){
+	public function book_detail()
+	{
 		return view('tampilan/book_detail.php');
 	}
-	public function passwordupdate(){
+	public function passwordupdate()
+	{
 		$model = new UserModel();
 		$email = $this->request->getVar('email');
 		$validate = $this->validate([
-				'email' => [
-					'rules' => 'required',
-					'errors' => [
-						'required' => 'Kolom Email Harus Di isi!!!',
-					]
-				],
-				'password' => [
-					'rules' => 'required|min_length[8]',
-					'errors' => [
-						'min_length' => 'Password yang dimasukan terlalu pendek!! Minimal terdapat 8 kata'
-					]
-				],
-				'password_confirm'=>[
-					'rules' => 'required|matches[password]',
-					'errors' => [
-						'matches' => 'Password yang anda masukkan tidak sama!!'
-					]
+			'email' => [
+				'rules' => 'required',
+				'errors' => [
+					'required' => 'Kolom Email Harus Di isi!!!',
 				]
-			]);
-		if(!$validate){
+			],
+			'password' => [
+				'rules' => 'required|min_length[8]',
+				'errors' => [
+					'min_length' => 'Password yang dimasukan terlalu pendek!! Minimal terdapat 8 kata'
+				]
+			],
+			'password_confirm' => [
+				'rules' => 'required|matches[password]',
+				'errors' => [
+					'matches' => 'Password yang anda masukkan tidak sama!!'
+				]
+			]
+		]);
+		if (!$validate) {
 			return redirect()->back()->withInput();
 		}
-		$password = password_hash($this->request->getVar('password'),PASSWORD_DEFAULT);
-		
-		$model->where('email',$email)->set([
+		$password = password_hash($this->request->getVar('password'), PASSWORD_DEFAULT);
+
+		$model->where('email', $email)->set([
 			'password' => $password
 		])->update();
-		session()->setFlashdata("success","Password Berhasil Di ganti!");
+		session()->setFlashdata("success", "Password Berhasil Di ganti!");
 		return redirect()->back();
 	}
 }
