@@ -43,6 +43,9 @@ class Home extends BaseController
 		$session->destroy();
 		return redirect()->to(base_url(''));
 	}
+	public function book_detail(){
+		return view('tampilan/book_detail.php');
+	}
 	public function passwordupdate(){
 		$model = new UserModel();
 		$email = $this->request->getVar('email');

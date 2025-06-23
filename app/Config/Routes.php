@@ -42,6 +42,7 @@ $routes->post('/user/settings/update','Home::userupdate');
 $routes->get('/forgot-password','Home::change_password');
 $routes->post('/user/password/update','Home::passwordupdate');
 $routes->get('/logout','Home::session_terminate');
+$routes->get('/book/detail','Hone::book_detail');
 /*
  * --------------------------------------------------------------------
  * Additional Routing
