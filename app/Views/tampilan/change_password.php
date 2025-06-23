@@ -29,7 +29,7 @@ if ($data != null) { ?>
         <form action="user/password/update" method="post"><br>
             <input type="email" name="email" placeholder="Masukkan Email" required><br>
             <input type="password" name="password" placeholder="Masukkan Password" required><br>
-            <input type="password_confirm" name="password_confirm" placeholder="Masukkan Ulang Password" required><br>
+            <input type="password" name="password_confirm" placeholder="Masukkan Ulang Password" required><br>
             <button type="submit">Change Password</button>
         </form>
     </div>
