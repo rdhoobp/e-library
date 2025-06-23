@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 13, 2025 at 02:03 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- Waktu pembuatan: 23 Jun 2025 pada 01.31
+-- Versi server: 10.4.32-MariaDB
+-- Versi PHP: 8.1.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `elib`
+-- Database: `e-library`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `book`
+-- Struktur dari tabel `book`
 --
 
 CREATE TABLE `book` (
@@ -42,10 +42,17 @@ CREATE TABLE `book` (
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data untuk tabel `book`
+--
+
+INSERT INTO `book` (`book_id`, `title`, `author`, `publisher`, `genre_id`, `isbn`, `availability`, `role`, `cover`, `pdf_link`, `created_at`, `updated_at`) VALUES
+('001', 'Laut Bercerita', 'Leila S. Chudori', 'Kepustakaan Populer Gramedia', 1, '9786024246945', 1, 1, 'laut-bercerita-leila-s-chudori.jpg', 'none', '2025-06-23 02:09:28', NULL);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `book_detail`
+-- Struktur dari tabel `book_detail`
 --
 
 CREATE TABLE `book_detail` (
@@ -58,7 +65,7 @@ CREATE TABLE `book_detail` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `borrowing_history`
+-- Struktur dari tabel `borrowing_history`
 --
 
 CREATE TABLE `borrowing_history` (
@@ -74,7 +81,7 @@ CREATE TABLE `borrowing_history` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `genre`
+-- Struktur dari tabel `genre`
 --
 
 CREATE TABLE `genre` (
@@ -89,7 +96,7 @@ CREATE TABLE `genre` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Struktur dari tabel `user`
 --
 
 CREATE TABLE `user` (
@@ -98,62 +105,63 @@ CREATE TABLE `user` (
   `name` varchar(255) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
+  `img` varchar(255) DEFAULT NULL,
   `role` int(11) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `user`
+-- Dumping data untuk tabel `user`
 --
 
-INSERT INTO `user` (`id_user`, `username`, `name`, `email`, `password`, `role`, `created_at`, `updated_at`) VALUES
-(1, 'admin', NULL, 'dimasidha@gmail.com', 'hashhashhash', 0, '2025-05-09 06:26:26', NULL);
+INSERT INTO `user` (`id_user`, `username`, `name`, `email`, `password`, `img`, `role`, `created_at`, `updated_at`) VALUES
+(5, 'admin', 'Raditya Abib', 'radityaabib511@gmail.com', '$2y$10$Fibb8YJmqGMEbQqXX0qhKOsJ6kmEBCPP5FUjcA.RSKu8wxpKslXRm', 'avatar1.jpg', 1, '2025-06-23 02:02:54', NULL);
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `book`
+-- Indeks untuk tabel `book`
 --
 ALTER TABLE `book`
   ADD PRIMARY KEY (`book_id`),
   ADD UNIQUE KEY `isbn` (`isbn`);
 
 --
--- Indexes for table `book_detail`
+-- Indeks untuk tabel `book_detail`
 --
 ALTER TABLE `book_detail`
   ADD PRIMARY KEY (`book_detail_id`);
 
 --
--- Indexes for table `borrowing_history`
+-- Indeks untuk tabel `borrowing_history`
 --
 ALTER TABLE `borrowing_history`
   ADD PRIMARY KEY (`borrow_id`);
 
 --
--- Indexes for table `genre`
+-- Indeks untuk tabel `genre`
 --
 ALTER TABLE `genre`
   ADD PRIMARY KEY (`genre_id`);
 
 --
--- Indexes for table `user`
+-- Indeks untuk tabel `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id_user`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `user`
+-- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
