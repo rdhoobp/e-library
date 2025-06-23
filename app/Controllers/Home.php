@@ -16,6 +16,9 @@ class Home extends BaseController
 	{
 		return view('tampilan/register.php');
 	}
+	public function user_add(){
+		return view('admin/add_user.php');
+	}
 	public function usersetting($id){
 		if(session('id')!=$id){
 			echo"ID tidak sesuai";exit;
@@ -36,7 +39,26 @@ class Home extends BaseController
 		return view('tampilan/change_password.php',$data);
 	}
 	public function userupdate(){
-
+		$model = new UserModel();
+		$id = $this->request->getVar('id');
+		$validate = $this->validate([
+			'username' => [
+				'rules' => 'required|is_unique[user.username]',
+				'errors' => [
+					'required' => 'Kolom Username Harus Di isi!!',
+					'is_unique' => 'Username sudah terdaftar!! Harap gunakan username lain!!!'
+				]
+			],
+			'name' => [
+				'rules' => 'required',
+				'errors' => [
+					'required' => 'Kolom Nama Harus Di isi!!!'
+				]
+			]
+		]);
+		if(!$validate){
+			return redirect()->back()->withInput();
+		}
 	}
 	public function session_terminate(){
 		$session = session();

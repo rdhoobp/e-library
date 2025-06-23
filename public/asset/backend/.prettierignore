@@ -1,5 +1,5 @@
+**/.git
+**/.svn
+**/.hg
+**/node_modules
 dist
-node_modules
-build
-assets/vendor
-html

@@ -43,6 +43,7 @@ $routes->get('/forgot-password','Home::change_password');
 $routes->post('/user/password/update','Home::passwordupdate');
 $routes->get('/logout','Home::session_terminate');
 $routes->get('/book/detail','Home::book_detail');
+$routes->get('/user/add','Home::user_add');
 /*
  * --------------------------------------------------------------------
  * Additional Routing

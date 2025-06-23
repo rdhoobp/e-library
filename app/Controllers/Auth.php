@@ -39,7 +39,8 @@ class Auth extends BaseController
 					'id' => $data['id_user'],
 					'name' => $data['name'],
 					'email' => $data['email'],
-					'username' => $data['username']
+					'username' => $data['username'],
+					'role' => $data['role']
 				];
 				$session->set($ses_data);
 				return redirect()->to('/');

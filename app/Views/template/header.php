@@ -78,6 +78,9 @@
 										<ul>
 											<?php
 											if (session('id') != null) { ?>
+												<?php if(session('role') == 1){?>
+													<li><a href="<?= base_url('user/add') ?>">Add Users</a></li>	
+												<?php }?>
 												<li><a href="<?= base_url('user/settings/' . session('id')) ?>">Settings</a></li>
 												<li><a href="<?= base_url('forgot-password') ?>">Change Password</a></li>
 												<li><a href="<?= base_url('logout') ?>">Log Out</a></li>
