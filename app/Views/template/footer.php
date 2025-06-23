@@ -121,6 +121,8 @@
 	crossorigin="anonymous"></script>
 <script src="<?= base_url("asset/frontend/js/plugins.js") ?>"></script>
 <script src="<?= base_url("asset/frontend/js/script.js") ?>"></script>
+<script src="<?= base_url("asset/frontend/font-awesome/js/all.js") ?>"></script>
+<script src="<?= base_url("asset/frontend/font-awesome/js/all.min.js") ?>"></script>
 
 </body>
 

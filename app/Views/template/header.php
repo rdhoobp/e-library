@@ -21,6 +21,9 @@
 	<link rel="stylesheet" type="text/css" href="<?= base_url("asset/frontend/css/vendor.css") ?>">
 	<link rel="stylesheet" type="text/css" href="<?= base_url("asset/frontend/style.css") ?>">
 
+	<link rel="stylesheet" type="text/css" href="<?= base_url("asset/frontend/font-awesome/css/all.css") ?>">
+	<link rel="stylesheet" type="text/css" href="<?= base_url("asset/frontend/font-awesome/css/all.min.css") ?>">
+
 </head>
 
 <body data-bs-spy="scroll" data-bs-target="#header" tabindex="0">
