@@ -43,9 +43,12 @@ $routes->get('/forgot-password','Home::change_password');
 $routes->post('/user/password/update','Home::passwordupdate');
 $routes->get('/logout','Home::session_terminate');
 $routes->get('/book/detail','Home::book_detail');
-$routes->get('/user/add','Admin::user_add');
+$routes->get('/user/add','User::user_add');
 $routes->get('/admin','Admin::index');
-$routes->post('/user/input','Admin::user_input');
+$routes->get('/user/index','User::index');
+$routes->get('/user/edit/(:num)','User::user_edit/$1');
+$routes->post('/user/input','User::user_input');
+$routes->post('/user/edit/update','User::user_update');
 /*
  * --------------------------------------------------------------------
  * Additional Routing

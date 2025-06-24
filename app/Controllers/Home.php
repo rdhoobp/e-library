@@ -42,7 +42,7 @@ class Home extends BaseController
 	public function userupdate()
 	{
 		$model = new UserModel();
-		$data = $this->request->getPost(['name', 'username', 'id']);
+		$data = $this->request->getVar(['name', 'username', 'id']);
 		$nama_file = $_FILES['profile']['name'];
 		$img = $this->request->getFile('profile');
 		//var_dump($nama_file);exit;
@@ -95,9 +95,9 @@ class Home extends BaseController
 		if (! $img->hasMoved()) {
 			$img->move(ROOTPATH . 'public\asset\img\avatar');
 			$model->where('id_user', $data['id'])->set([
+				'img' => $nama_file,
 				'username' => $data['username'],
-				'name' => $data['name'],
-				'img' => $nama_file
+				'name' => $data['name']
 			])->update();
 			session()->setFlashdata("success", "Akun Anda Berhasil Di ganti!");
 			return redirect()->back();
