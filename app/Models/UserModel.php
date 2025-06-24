@@ -1,18 +1,21 @@
 <?php
+
 namespace App\Models;
+
 use CodeIgniter\Model;
+
 class UserModel extends Model
 {
     protected $table = 'user';
-    protected $allowedFields = ['id_user','name','username','email','password','role','img','created_at','updated_at'];
+    protected $allowedFields = ['id_user', 'name', 'username', 'email', 'password', 'role', 'img', 'created_at', 'updated_at'];
     protected $useTimeStamps = true;
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
     protected $validationRules = [
         'name' => [
             'rules' => 'required',
-            'errors' =>[
-                'required'=>'Kolom Nama Harus Di isi!!!'
+            'errors' => [
+                'required' => 'Kolom Nama Harus Di isi!!!'
             ]
         ],
         'username' => [
@@ -40,10 +43,10 @@ class UserModel extends Model
     protected $beforeInsert = ['hashPassword'];
     protected function hashPassword(array $data)
     {
-        if(!isset($data['data']['password'])){
+        if (!isset($data['data']['password'])) {
             return $data;
         }
-        $data['data']['password'] = password_hash($data['data']['password'],PASSWORD_DEFAULT);
+        $data['data']['password'] = password_hash($data['data']['password'], PASSWORD_DEFAULT);
         return $data;
     }
 }

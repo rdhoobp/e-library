@@ -1,5 +1,11 @@
 <?= view('template/header.php') ?>
 <?php $validation = \Config\Services::validation(); ?>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+    .settings-page * {
+        font-family: 'Poppins', sans-serif !important;
+    }
+</style>
 <?php
 if (session()->get("success")) { ?>
     <div class="col-12" style="background-color:lightgreen;text-align:center;">

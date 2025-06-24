@@ -34,7 +34,7 @@
 				<div class="row">
 					<div class="col-md-2">
 						<div class="main-logo">
-							<a href="index.html">
+							<a href="<?= base_url('/') ?>">
 								<img src="<?= base_url("asset/img/logos/icon-light-header.png") ?>" alt="logo">
 							</a>
 						</div>
@@ -49,8 +49,8 @@
 									<li class="menu-item has-sub">
 										<a href="#pages" class="nav-link">Featured</a>
 										<ul>
-											<li><a href="index.html">Bookmark</a></li>
-											<li><a href="index.html">Read History</a></li>
+											<li><a href="#">Bookmark</a></li>
+											<li><a href="#">Read History</a></li>
 										</ul>
 									</li>
 									<li class="menu-item"><a href="#popular-books" class="nav-link">Popular</a></li>
@@ -78,9 +78,9 @@
 										<ul>
 											<?php
 											if (session('id') != null) { ?>
-												<?php if(session('role') == 1){?>
-													<li><a href="<?= base_url('user/add') ?>">Add Users</a></li>	
-												<?php }?>
+												<?php if (session('role') == 1) { ?>
+													<li><a href="<?= base_url('user/add') ?>">Add Users</a></li>
+												<?php } ?>
 												<li><a href="<?= base_url('user/settings/' . session('id')) ?>">Settings</a></li>
 												<li><a href="<?= base_url('forgot-password') ?>">Change Password</a></li>
 												<li><a href="<?= base_url('logout') ?>">Log Out</a></li>

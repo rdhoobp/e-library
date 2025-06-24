@@ -79,7 +79,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="text-center">
-                                    <input type="text"value="<?=  $data['img'] ?>"name="old_profile" style="display:none;">
+                                    <input type="text" value="<?= $data['img'] ?>" name="old_profile" style="display:none;">
                                     <img src="<?= base_url('asset/img/avatar/' . $data['img']) ?>" class="img-fluid border border-4 mb-2" width="170" height="170" alt="Profile Picture">
                                     <div>
                                         <label for="profile"><span class="btn btn-primary btn-sm"><i class="fa fa-upload"></i></span></label>

@@ -67,9 +67,9 @@
                                     <div class="d-grid mb-2">
                                         <button class="btn btn-primary btn-lg" type="submit">Log in now</button>
                                     </div>
-                                    <div class="text-end">
+                                    <!-- <div class="text-end">
                                         <a href="<?= base_url('forgot-password') ?>">Forgot password?</a>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </form>
