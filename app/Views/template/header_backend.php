@@ -131,7 +131,7 @@
             <span class="menu-header-text">Pages</span>
           </li>
           <li class="menu-item">
-            <a href="<?= base_url("user/") ?>" class="menu-link">
+            <a href="<?= base_url("user/add") ?>" class="menu-link">
               <i class="menu-icon tf-icons bx bx-user"></i>
               <div data-i18n="Analytics">User</div>
             </a>

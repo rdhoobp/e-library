@@ -43,6 +43,9 @@ class Auth extends BaseController
 					'role' => $data['role']
 				];
 				$session->set($ses_data);
+				if(session('role') == 1){
+					return redirect()->to('/admin');		
+				}
 				return redirect()->to('/');
 			}else{
 				$session->setFlashdata("error","Password Salah!!");
