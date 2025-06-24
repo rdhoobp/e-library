@@ -6,19 +6,21 @@ use App\Models\UserModel;
 
 class User extends BaseController
 {
-	public function index()
-	{
-		return view('admin/index.php');
-	}
-	public function user_index()
-	{
-		return view('admin/user/user_data.php');
-	}
-	public function user_edit()
-	{
-		return view('admin/user/user_edit.php');
-	}
-	public function user_input()
+    // public function index()
+    // {
+    // 	return view('admin/index.php');
+    // }
+    public function user_index()
+    {
+        $model = new UserModel();
+        $data['users'] = $model->findAll();
+        return view('admin/user/user_data.php', $data);
+    }
+    public function user_edit()
+    {
+        return view('admin/user/user_edit.php');
+    }
+    public function user_input()
     {
         $model = new UserModel();
         $validate = $this->validate([
@@ -64,7 +66,7 @@ class User extends BaseController
         if (!$validate) {
             return redirect()->back()->withInput();
         }
-        $data = $this->request->getPost(['name', 'username', 'email', 'password','role']);
+        $data = $this->request->getPost(['name', 'username', 'email', 'password', 'role']);
         $save = $model->save($data);
         if ($save) {
             session()->setFlashdata("success", "User Berhasil Di Inputkan!");
