@@ -42,10 +42,40 @@ class Home extends BaseController
 	public function userupdate()
 	{
 		$model = new UserModel();
-		$id = $this->request->getVar('id');
-		$validate = $this->validate([
+		$data = $this->request->getPost(['name', 'username', 'id']);
+		$nama_file = $_FILES['profile']['name'];
+		$img = $this->request->getFile('profile');
+		//var_dump($nama_file);exit;
+		if($nama_file != ""){
+			$validate = $this->validate([
 			'username' => [
-				'rules' => 'required|is_unique[user.username]',
+				'rules' => "required|is_unique[user.username,id,{$data['username']}]",
+				'errors' => [
+					'required' => 'Kolom Username Harus Di isi!!',
+					'is_unique' => 'Username sudah terdaftar!! Harap gunakan username lain!!!'
+				]
+			],
+			'name' => [
+				'rules' => 'required',
+				'errors' => [
+					'required' => 'Kolom Nama Harus Di isi!!!'
+				]
+			],
+			'profile' => [
+				'label' => 'Image File',
+				'rules' => [
+					'uploaded[profile]',
+					'is_image[profile]',
+					'mime_in[profile,image/jpg,image/jpeg,image/gif,image/png,image/webp]',
+					'max_size[profile,100]',
+					'max_dims[profile,1024,768]',
+				],
+			],
+		]);
+		}else{
+			$validate = $this->validate([
+			'username' => [
+				'rules' => "required|is_unique[user.username,id,{$data['username']}]",
 				'errors' => [
 					'required' => 'Kolom Username Harus Di isi!!',
 					'is_unique' => 'Username sudah terdaftar!! Harap gunakan username lain!!!'
@@ -58,8 +88,22 @@ class Home extends BaseController
 				]
 			]
 		]);
+		}
 		if (!$validate) {
 			return redirect()->back()->withInput();
+		}
+		if (! $img->hasMoved()) {
+			$img->move(ROOTPATH . 'public\asset\img\avatar');
+			$model->where('id_user', $data['id'])->set([
+				'username' => $data['username'],
+				'name' => $data['name'],
+				'img' => $nama_file
+			])->update();
+			session()->setFlashdata("success", "Akun Anda Berhasil Di ganti!");
+			return redirect()->back();
+		} else {
+			session()->setFlashdata("error", "file dengan nama tersebut telah ada,harap ubah nama file!!!");
+			return redirect()->back();
 		}
 	}
 	public function session_terminate()
