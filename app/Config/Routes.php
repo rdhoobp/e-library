@@ -45,6 +45,7 @@ $routes->get('/logout','Home::session_terminate');
 $routes->get('/book/detail','Home::book_detail');
 $routes->get('/user/add','Admin::user_add');
 $routes->get('/admin','Admin::index');
+$routes->post('/user/input','Admin::user_input');
 /*
  * --------------------------------------------------------------------
  * Additional Routing
