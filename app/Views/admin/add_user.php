@@ -51,7 +51,7 @@
         </div>
         <div class="col-12">
             <div class="form-floating mb-3">
-                <select name="role" id="role"class="form-control"required>
+                <select name="role" id="role" class="form-control" required>
                     <option value=""></option>
                     <option value="0">User</option>
                     <option value="1">Admin</option>
