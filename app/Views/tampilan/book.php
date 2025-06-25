@@ -22,65 +22,31 @@
 <section class="padding-medium">
     <div class="container">
         <div class="row">
-            <div class="col-md-3">
-                <div class="product-item">
-                    <figure class="product-style">
-                        <img src="<?= base_url("asset/img/book_cover/Sejarah-Dunia-yang-Disembunyikan.jpg") ?>" alt="Books" class="product-item">
-                        <button type="button" class="add-to-cart" data-product-tile="add-to-cart">
-                            <a href="">Add to Cart</a>
-                        </button>
-                    </figure>
-                    <figcaption>
-                        <h3>Sejarah Dunia Yang Disembuntikan</h3>
-                        <span>Jonathan Black</span>
-                        <div class="item-price">Rp. 119.000</div>
-                    </figcaption>
+            <?php foreach ($books as $book): ?>
+                <div class="col-md-3 mb-4">
+                    <div class="product-item">
+                        <figure class="product-style">
+                            <img src="<?= base_url('asset/img/book_cover/' . $book['cover']) ?>.jpg" alt="<?= esc($book['title']) ?>" class="product-item">
+                            <button type="button" class="add-to-cart" data-product-tile="add-to-cart">
+                                <a href="book/detail/<?= $book['book_id'] ?> ">READ NOW!</a>
+                            </button>
+                        </figure>
+                        <figcaption>
+                            <h3><?= esc($book['title']) ?></h3>
+                            <span><?= esc($book['author']) ?></span>
+                            <!-- <span><?= esc($book['publisher']) ?></span> -->
+                        </figcaption>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="product-item">
-                    <figure class="product-style">
-                        <img src="<?= base_url("asset/img/book_cover/Sejarah-Dunia-yang-Disembunyikan.jpg") ?>" alt="Books" class="product-item">
-                        <button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
-                            Cart</button>
-                    </figure>
-                    <figcaption>
-                        <h3>Sejarah Dunia Yang Disembuntikan</h3>
-                        <span>Jonathan Black</span>
-                        <div class="item-price">Rp. 119.000</div>
-                    </figcaption>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="product-item">
-                    <figure class="product-style">
-                        <img src="<?= base_url("asset/img/book_cover/Sejarah-Dunia-yang-Disembunyikan.jpg") ?>" alt="Books" class="product-item">
-                        <button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
-                            Cart</button>
-                    </figure>
-                    <figcaption>
-                        <h3>Sejarah Dunia Yang Disembuntikan</h3>
-                        <span>Jonathan Black</span>
-                        <div class="item-price">Rp. 119.000</div>
-                    </figcaption>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="product-item">
-                    <figure class="product-style">
-                        <img src="<?= base_url("asset/img/book_cover/Sejarah-Dunia-yang-Disembunyikan.jpg") ?>" alt="Books" class="product-item">
-                        <button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
-                            Cart</button>
-                    </figure>
-                    <figcaption>
-                        <h3>Sejarah Dunia Yang Disembuntikan</h3>
-                        <span>Jonathan Black</span>
-                        <div class="item-price">Rp. 119.000</div>
-                    </figcaption>
-                </div>
+            <?php endforeach; ?>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-12 d-flex justify-content-center">
+                <?= $pager->links('default', 'bootstrap_custom') ?>
             </div>
         </div>
     </div>
 </section>
+
 
 <?= view('template/footer.php') ?>

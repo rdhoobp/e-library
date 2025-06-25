@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
+use App\Models\BookModel;
 
 class Home extends BaseController
 {
@@ -114,8 +115,13 @@ class Home extends BaseController
 	}
 	public function book()
 	{
-		return view('tampilan/book.php');
+		$bookModel = new BookModel();
+		$data['books'] = $bookModel->paginate(16);
+		$data['pager'] = $bookModel->pager;
+		$data['title'] = "Library";
+		return view('tampilan/book.php', $data);
 	}
+
 	public function book_detail()
 	{
 		return view('tampilan/book_detail.php');
