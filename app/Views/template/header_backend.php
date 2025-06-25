@@ -14,7 +14,7 @@
     name="viewport"
     content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-  <title>E-Lib | Dashboard</title>
+  <title><?= $title; ?></title>
 
   <meta name="description" content="" />
 
@@ -121,7 +121,7 @@
 
         <ul class="menu-inner py-1">
           <!-- Dashboard -->
-          <li class="menu-item">
+          <li class="menu-item <?= ($title == 'dashboard') ? 'active' : '' ?>">
             <a href="<?= base_url("dashboard/") ?>" class="menu-link">
               <i class="menu-icon tf-icons bx bx-home-circle"></i>
               <div data-i18n="Analytics">Dashboard</div>
@@ -130,7 +130,7 @@
           <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Pages</span>
           </li>
-          <li class="menu-item">
+          <li class="menu-item <?= ($title == 'user') ? 'active' : '' ?>">
             <a href="<?= base_url("/user/index") ?>" class="menu-link">
               <i class="menu-icon tf-icons bx bx-user"></i>
               <div data-i18n="Analytics">User</div>

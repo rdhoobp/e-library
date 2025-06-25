@@ -14,6 +14,7 @@ class User extends BaseController
     {
         $model = new UserModel();
         $data['users'] = $model->findAll();
+        $data['title'] = "user";
         return view('admin/user/user_data.php', $data);
     }
     public function user_edit()
@@ -67,6 +68,7 @@ class User extends BaseController
             return redirect()->back()->withInput();
         }
         $data = $this->request->getPost(['name', 'username', 'email', 'password', 'role']);
+        $data['title'] = "user";
         $save = $model->save($data);
         if ($save) {
             session()->setFlashdata("success", "User Berhasil Di Inputkan!");

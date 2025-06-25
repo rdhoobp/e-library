@@ -31,20 +31,27 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
+
+//start
 $routes->get('/', 'Home::index');
 $routes->get('/login', 'Home::login');
+
+//auth
 $routes->get('/register', 'Home::register');
 $routes->post('/login/submit', 'Auth::auth');
 $routes->post('/register/submit', 'Auth::register_submit');
+//frontend
 $routes->get('/user/settings/(:num)', 'Home::usersetting/$1');
 $routes->post('/user/settings/update', 'Home::userupdate');
-$routes->get('/forgot-password', 'Home::change_password');
 $routes->post('/user/password/update', 'Home::passwordupdate');
+$routes->get('/forgot-password', 'Home::change_password');
 $routes->get('/logout', 'Home::session_terminate');
+$routes->get('/book', 'Home::book');
 $routes->get('/book/detail', 'Home::book_detail');
-$routes->get('/user/add', 'User::user_add');
-$routes->get('/admin', 'Admin::index');
+// backend
+$routes->get('/dashboard', 'Dashboard::index');
 $routes->get('/user/index', 'User::user_index');
+$routes->get('/user/add', 'User::user_add');
 $routes->get('/user/edit/(:num)', 'User::user_edit/$1');
 $routes->post('/user/input', 'User::user_input');
 $routes->post('/user/edit/update', 'User::user_update');
