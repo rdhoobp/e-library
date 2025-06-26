@@ -127,27 +127,32 @@
               <div data-i18n="Analytics">Dashboard</div>
             </a>
           </li>
+
           <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Pages</span>
           </li>
+
           <li class="menu-item <?= ($title == 'user') ? 'active' : '' ?>">
             <a href="<?= base_url("/user/index") ?>" class="menu-link">
               <i class="menu-icon tf-icons bx bx-user"></i>
               <div data-i18n="Analytics">User</div>
             </a>
           </li>
-          <li class="menu-item">
+
+          <li class="menu-item <?= ($title == 'book') ? 'active' : '' ?>">
             <a href="<?= base_url("/book/index") ?>" class="menu-link">
               <i class="menu-icon tf-icons bx bx-book-alt"></i>
               <div data-i18n="Analytics">Books</div>
             </a>
           </li>
-          <li class="menu-item">
-            <a href="<?= base_url("") ?>" class="menu-link">
+
+          <li class="menu-item <?= ($title == 'genre') ? 'active' : '' ?>">
+            <a href="<?= base_url("/genre/index") ?>" class="menu-link">
               <i class="menu-icon tf-icons bx bx-bookmarks"></i>
               <div data-i18n="Analytics">Genre</div>
             </a>
           </li>
+
         </ul>
       </aside>
       <!-- / Menu -->

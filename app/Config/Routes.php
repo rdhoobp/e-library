@@ -56,11 +56,11 @@ $routes->get('/user/edit/(:num)', 'User::user_edit/$1');
 $routes->post('/user/input', 'User::user_input');
 $routes->post('/user/edit/update', 'User::user_update');
 //backend buku
-$routes->get('/book/index','Book::index');
-$routes->get('/book/add','Book::tambah');
-$routes->get('/book/edit/(:num)','Book::edit/$1');
-$routes->post('book/input','Book::book_input');
-$routes->post('/book/edit/update','Book::book_update');
+$routes->get('/book/index', 'Book::index');
+$routes->get('/book/add', 'Book::tambah');
+$routes->get('/book/edit/(:num)', 'Book::edit/$1');
+$routes->post('book/input', 'Book::book_input');
+$routes->post('/book/edit/update', 'Book::book_update');
 /*
  * --------------------------------------------------------------------
  * Additional Routing

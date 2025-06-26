@@ -16,21 +16,15 @@ class Book extends BaseController
     public function edit($id)
     {
         $model = new BookModel();
-        $data['book'] = $model->where('book_id',$id)->first();
+        $data['book'] = $model->where('book_id', $id)->first();
         $data['title'] = "book";
-        return view('admin/book/edit.php',$data);
+        return view('admin/book/edit.php', $data);
     }
     public function tambah()
     {
         $data['title'] = "book";
-        return view('admin/book/tambah.php',$data);
+        return view('admin/book/tambah.php', $data);
     }
-    public function book_input()
-    {
-
-    }
-    public function book_update()
-    {
-
-    }
+    public function book_input() {}
+    public function book_update() {}
 }
