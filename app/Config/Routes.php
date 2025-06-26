@@ -48,13 +48,19 @@ $routes->get('/forgot-password', 'Home::change_password');
 $routes->get('/logout', 'Home::session_terminate');
 $routes->get('/book', 'Home::book');
 $routes->get('/book/detail/(:num)', 'Home::book_detail/$1');
-// backend
+// backend user
 $routes->get('/dashboard', 'Dashboard::index');
 $routes->get('/user/index', 'User::user_index');
 $routes->get('/user/add', 'User::user_add');
 $routes->get('/user/edit/(:num)', 'User::user_edit/$1');
 $routes->post('/user/input', 'User::user_input');
 $routes->post('/user/edit/update', 'User::user_update');
+//backend buku
+$routes->get('/book/index','Book::index');
+$routes->get('/book/add','Book::tambah');
+$routes->get('/book/edit/(:num)','Book::edit/$1');
+$routes->post('book/input','Book::book_input');
+$routes->post('/book/edit/update','Book::book_update');
 /*
  * --------------------------------------------------------------------
  * Additional Routing

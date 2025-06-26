@@ -137,7 +137,7 @@
             </a>
           </li>
           <li class="menu-item">
-            <a href="<?= base_url("") ?>" class="menu-link">
+            <a href="<?= base_url("/book/index") ?>" class="menu-link">
               <i class="menu-icon tf-icons bx bx-book-alt"></i>
               <div data-i18n="Analytics">Books</div>
             </a>
