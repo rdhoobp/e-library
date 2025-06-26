@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
+use App\Models\BookModel;
 
 class Home extends BaseController
 {
@@ -46,48 +47,48 @@ class Home extends BaseController
 		$nama_file = $_FILES['profile']['name'];
 		$img = $this->request->getFile('profile');
 		//var_dump($nama_file);exit;
-		if($nama_file != ""){
+		if ($nama_file != "") {
 			$validate = $this->validate([
-			'username' => [
-				'rules' => "required|is_unique[user.username,id,{$data['username']}]",
-				'errors' => [
-					'required' => 'Kolom Username Harus Di isi!!',
-					'is_unique' => 'Username sudah terdaftar!! Harap gunakan username lain!!!'
-				]
-			],
-			'name' => [
-				'rules' => 'required',
-				'errors' => [
-					'required' => 'Kolom Nama Harus Di isi!!!'
-				]
-			],
-			'profile' => [
-				'label' => 'Image File',
-				'rules' => [
-					'uploaded[profile]',
-					'is_image[profile]',
-					'mime_in[profile,image/jpg,image/jpeg,image/gif,image/png,image/webp]',
-					'max_size[profile,100]',
-					'max_dims[profile,1024,768]',
+				'username' => [
+					'rules' => "required|is_unique[user.username,id,{$data['username']}]",
+					'errors' => [
+						'required' => 'Kolom Username Harus Di isi!!',
+						'is_unique' => 'Username sudah terdaftar!! Harap gunakan username lain!!!'
+					]
 				],
-			],
-		]);
-		}else{
+				'name' => [
+					'rules' => 'required',
+					'errors' => [
+						'required' => 'Kolom Nama Harus Di isi!!!'
+					]
+				],
+				'profile' => [
+					'label' => 'Image File',
+					'rules' => [
+						'uploaded[profile]',
+						'is_image[profile]',
+						'mime_in[profile,image/jpg,image/jpeg,image/gif,image/png,image/webp]',
+						'max_size[profile,100]',
+						'max_dims[profile,1024,768]',
+					],
+				],
+			]);
+		} else {
 			$validate = $this->validate([
-			'username' => [
-				'rules' => "required|is_unique[user.username,id,{$data['username']}]",
-				'errors' => [
-					'required' => 'Kolom Username Harus Di isi!!',
-					'is_unique' => 'Username sudah terdaftar!! Harap gunakan username lain!!!'
+				'username' => [
+					'rules' => "required|is_unique[user.username,id,{$data['username']}]",
+					'errors' => [
+						'required' => 'Kolom Username Harus Di isi!!',
+						'is_unique' => 'Username sudah terdaftar!! Harap gunakan username lain!!!'
+					]
+				],
+				'name' => [
+					'rules' => 'required',
+					'errors' => [
+						'required' => 'Kolom Nama Harus Di isi!!!'
+					]
 				]
-			],
-			'name' => [
-				'rules' => 'required',
-				'errors' => [
-					'required' => 'Kolom Nama Harus Di isi!!!'
-				]
-			]
-		]);
+			]);
 		}
 		if (!$validate) {
 			return redirect()->back()->withInput();
@@ -112,6 +113,15 @@ class Home extends BaseController
 		$session->destroy();
 		return redirect()->to(base_url(''));
 	}
+	public function book()
+	{
+		$bookModel = new BookModel();
+		$data['books'] = $bookModel->paginate(16);
+		$data['pager'] = $bookModel->pager;
+		$data['title'] = "Library";
+		return view('tampilan/book.php', $data);
+	}
+
 	public function book_detail()
 	{
 		return view('tampilan/book_detail.php');

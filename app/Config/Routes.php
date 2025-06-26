@@ -7,8 +7,7 @@ $routes = Services::routes();
 
 // Load the system's routing file first, so that the app and ENVIRONMENT
 // can override as needed.
-if (file_exists(SYSTEMPATH . 'Config/Routes.php'))
-{
+if (file_exists(SYSTEMPATH . 'Config/Routes.php')) {
 	require SYSTEMPATH . 'Config/Routes.php';
 }
 
@@ -32,23 +31,36 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
+
+//start
 $routes->get('/', 'Home::index');
-$routes->get('/login','Home::login');
-$routes->get('/register','Home::register');
-$routes->post('/login/submit','Auth::auth');
-$routes->post('/register/submit','Auth::register_submit');
-$routes->get('/user/settings/(:num)','Home::usersetting/$1');
-$routes->post('/user/settings/update','Home::userupdate');
-$routes->get('/forgot-password','Home::change_password');
-$routes->post('/user/password/update','Home::passwordupdate');
-$routes->get('/logout','Home::session_terminate');
-$routes->get('/book/detail','Home::book_detail');
-$routes->get('/user/add','User::user_add');
-$routes->get('/admin','Admin::index');
-$routes->get('/user/index','User::index');
-$routes->get('/user/edit/(:num)','User::user_edit/$1');
-$routes->post('/user/input','User::user_input');
-$routes->post('/user/edit/update','User::user_update');
+$routes->get('/login', 'Home::login');
+
+//auth
+$routes->get('/register', 'Home::register');
+$routes->post('/login/submit', 'Auth::auth');
+$routes->post('/register/submit', 'Auth::register_submit');
+//frontend
+$routes->get('/user/settings/(:num)', 'Home::usersetting/$1');
+$routes->post('/user/settings/update', 'Home::userupdate');
+$routes->post('/user/password/update', 'Home::passwordupdate');
+$routes->get('/forgot-password', 'Home::change_password');
+$routes->get('/logout', 'Home::session_terminate');
+$routes->get('/book', 'Home::book');
+$routes->get('/book/detail/(:num)', 'Home::book_detail/$1');
+// backend user
+$routes->get('/dashboard', 'Dashboard::index');
+$routes->get('/user/index', 'User::user_index');
+$routes->get('/user/add', 'User::user_add');
+$routes->get('/user/edit/(:num)', 'User::user_edit/$1');
+$routes->post('/user/input', 'User::user_input');
+$routes->post('/user/edit/update', 'User::user_update');
+//backend buku
+$routes->get('/book/index', 'Book::index');
+$routes->get('/book/add', 'Book::tambah');
+$routes->get('/book/edit/(:num)', 'Book::edit/$1');
+$routes->post('book/input', 'Book::book_input');
+$routes->post('/book/edit/update', 'Book::book_update');
 /*
  * --------------------------------------------------------------------
  * Additional Routing
@@ -62,7 +74,6 @@ $routes->post('/user/edit/update','User::user_update');
  * You will have access to the $routes object within that file without
  * needing to reload it.
  */
-if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php'))
-{
+if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
 	require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
 }

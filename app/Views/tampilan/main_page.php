@@ -130,17 +130,6 @@
 
 			</div><!--inner-content-->
 		</div>
-
-		<div class="row">
-			<div class="col-md-12">
-
-				<div class="btn-wrap align-right">
-					<a href="#" class="btn-accent-arrow">View all products <i
-							class="icon icon-ns-arrow-right"></i></a>
-				</div>
-
-			</div>
-		</div>
 	</div>
 </section>
 

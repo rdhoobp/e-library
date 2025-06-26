@@ -2,12 +2,13 @@
 
 namespace App\Controllers;
 
-use App\Models\UserModel;
+use App\Models\DashboardModel;
 
 class Dashboard extends BaseController
 {
     public function index()
     {
-        return view('backend/dashboard.php');
+        $data['title'] = "dashboard";
+        return view('admin/index.php', $data);
     }
 }
