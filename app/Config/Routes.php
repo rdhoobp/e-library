@@ -61,6 +61,12 @@ $routes->get('/book/add', 'Book::tambah');
 $routes->get('/book/edit/(:num)', 'Book::edit/$1');
 $routes->post('book/input', 'Book::book_input');
 $routes->post('/book/edit/update', 'Book::book_update');
+//backend genre
+$routes->get('/genre/index','Genre::index');
+$routes->get('/genre/add','Genre::tambah');
+$routes->get('/genre/edit/(:num)','Genre::edit/$1');
+$routes->post('/genre/input','Genre::genre_input');
+$routes->post('/genre/edit/update','Genre::genre_update');
 /*
  * --------------------------------------------------------------------
  * Additional Routing
