@@ -3,15 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
-<<<<<<< HEAD
--- Generation Time: Jun 26, 2025 at 08:19 PM
+-- Generation Time: Jul 02, 2025 at 09:41 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
-=======
--- Waktu pembuatan: 25 Jun 2025 pada 12.17
--- Versi server: 10.4.32-MariaDB
--- Versi PHP: 8.1.25
->>>>>>> 9c79a6030339a1c600f042300149303390c86dc2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -30,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `book`
+-- Table structure for table `book`
 --
 
 CREATE TABLE `book` (
@@ -41,6 +35,7 @@ CREATE TABLE `book` (
   `genre_id` int(11) NOT NULL,
   `isbn` varchar(20) DEFAULT NULL,
   `availability` tinyint(1) NOT NULL,
+  `role` int(11) NOT NULL,
   `cover` varchar(250) NOT NULL,
   `pdf_link` varchar(250) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
@@ -48,10 +43,9 @@ CREATE TABLE `book` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `book`
+-- Dumping data for table `book`
 --
 
-<<<<<<< HEAD
 INSERT INTO `book` (`book_id`, `title`, `author`, `publisher`, `genre_id`, `isbn`, `availability`, `role`, `cover`, `pdf_link`, `created_at`, `updated_at`) VALUES
 ('001', 'Laut Bercerita', 'Leila S. Chudori', 'Kepustakaan Populer Gramedia', 1, '9786024246945', 1, 1, 'laut-bercerita-leila-s-chudori.jpg', 'none', '2025-06-23 02:09:28', NULL),
 ('002', 'Atomic Habits', 'James Clear', 'Kepustakaan Populer Gramedia', 1, '9780593189641', 1, 1, 'atomic-habits-james-clear.jpg', 'none', '2025-06-23 06:06:19', NULL),
@@ -63,23 +57,24 @@ INSERT INTO `book` (`book_id`, `title`, `author`, `publisher`, `genre_id`, `isbn
 ('008', 'BEYOND AVERAGE', 'Kun Wahyu Wardana', 'Kepustakaan Populer Gramedia', 1, '9786020681580', 1, 1, 'beyond-average-kun-wahyu-wardana.jpg', 'none', '2025-06-23 07:25:32', NULL),
 ('009', 'Dompet Ayah Sepatu Ibu', 'J.S Khairen', 'Kepustakaan Populer Gramedia', 1, '9786020530222', 1, 1, 'dompet-ayah-sepatu-ibu-j-s-khairen.jpg', 'none', '2025-06-23 07:28:30', NULL),
 ('010', 'Naruto Bind Up Edition 17', 'MASASHI KISHIMOTO', 'Kepustakaan Populer Gramedia', 1, '9786230069765', 1, 1, 'naruto-bind-up-edition-17-masashi-kishimoto.jpg', 'none', '2025-06-23 07:33:06', NULL);
-=======
-INSERT INTO `book` (`book_id`, `title`, `author`, `publisher`, `genre_id`, `isbn`, `availability`, `cover`, `pdf_link`, `created_at`, `updated_at`) VALUES
-('001', 'Laut Bercerita', 'Leila S. Chudori', 'Kepustakaan Populer Gramedia', 1, '9786024246945', 1, 'laut-bercerita-leila-s-chudori', 'none', '2025-06-23 02:09:28', NULL),
-('002', 'Atomic Habits', 'James Clear', 'Kepustakaan Populer Gramedia', 1, '9780593189641', 1, 'atomic-habits-james-clear', 'none', '2025-06-23 06:06:19', NULL),
-('003', 'The Psychology of Money', 'Morgan Housel', 'Kepustakaan Populer Gramedia', 1, '9786238371044', 1, 'the-psychology-of-money-morgan-housel', 'none', '2025-06-23 06:16:01', NULL),
-('004', 'Sisi Tergelap Surga', 'Brian Khrisna', 'Kepustakaan Populer Gramedia', 1, '9786020674384', 1, 'sisi-tergelap-surga-brian-khrisna', 'none', '2025-06-23 06:26:34', NULL),
-('006', 'Teka Teki Rumah Aneh', 'Uketsu', 'Kepustakaan Populer Gramedia', 1, '9786020669960', 1, 'teka-teki-rumah-aneh-uketsu', 'none', '2025-06-23 07:12:27', NULL),
-('007', 'Ruri Dragon 01', 'Masaoki Shindo', 'Kepustakaan Populer Gramedia', 1, '9786230316791', 1, 'ruri-dragon-01-masaoki-shindo', 'none', '2025-06-23 07:16:07', NULL),
-('008', 'BEYOND AVERAGE', 'Kun Wahyu Wardana', 'Kepustakaan Populer Gramedia', 1, '9786020681580', 1, 'beyond-average-kun-wahyu-wardana', 'none', '2025-06-23 07:25:32', NULL),
-('009', 'Dompet Ayah Sepatu Ibu', 'J.S Khairen', 'Kepustakaan Populer Gramedia', 1, '9786020530222', 1, 'dompet-ayah-sepatu-ibu-j-s-khairen', 'none', '2025-06-23 07:28:30', NULL),
-('010', 'Naruto Bind Up Edition 17', 'MASASHI KISHIMOTO', 'Kepustakaan Populer Gramedia', 1, '9786230069765', 1, 'naruto-bind-up-edition-17-masashi-kishimoto', 'none', '2025-06-23 07:33:06', NULL);
->>>>>>> 9c79a6030339a1c600f042300149303390c86dc2
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `borrowing_history`
+-- Table structure for table `book_detail`
+--
+
+CREATE TABLE `book_detail` (
+  `book_detail_id` int(11) NOT NULL,
+  `book_id` varchar(20) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `borrowing_history`
 --
 
 CREATE TABLE `borrowing_history` (
@@ -95,7 +90,7 @@ CREATE TABLE `borrowing_history` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `genre`
+-- Table structure for table `genre`
 --
 
 CREATE TABLE `genre` (
@@ -107,7 +102,7 @@ CREATE TABLE `genre` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `genre`
+-- Dumping data for table `genre`
 --
 
 INSERT INTO `genre` (`genre_id`, `name`, `description`, `created_at`, `updated_at`) VALUES
@@ -125,7 +120,7 @@ INSERT INTO `genre` (`genre_id`, `name`, `description`, `created_at`, `updated_a
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `user`
+-- Table structure for table `user`
 --
 
 CREATE TABLE `user` (
@@ -141,7 +136,7 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `user`
+-- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`id_user`, `username`, `name`, `email`, `password`, `img`, `role`, `created_at`, `updated_at`) VALUES
@@ -153,36 +148,60 @@ INSERT INTO `user` (`id_user`, `username`, `name`, `email`, `password`, `img`, `
 --
 
 --
--- Indeks untuk tabel `book`
+-- Indexes for table `book`
 --
 ALTER TABLE `book`
   ADD PRIMARY KEY (`book_id`),
   ADD UNIQUE KEY `isbn` (`isbn`);
 
 --
--- Indeks untuk tabel `borrowing_history`
+-- Indexes for table `book_detail`
+--
+ALTER TABLE `book_detail`
+  ADD PRIMARY KEY (`book_detail_id`);
+
+--
+-- Indexes for table `borrowing_history`
 --
 ALTER TABLE `borrowing_history`
   ADD PRIMARY KEY (`borrow_id`);
 
 --
--- Indeks untuk tabel `genre`
+-- Indexes for table `genre`
 --
 ALTER TABLE `genre`
   ADD PRIMARY KEY (`genre_id`);
 
 --
--- Indeks untuk tabel `user`
+-- Indexes for table `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id_user`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `user`
+-- AUTO_INCREMENT for table `book_detail`
+--
+ALTER TABLE `book_detail`
+  MODIFY `book_detail_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `borrowing_history`
+--
+ALTER TABLE `borrowing_history`
+  MODIFY `borrow_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `genre`
+--
+ALTER TABLE `genre`
+  MODIFY `genre_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
   MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
