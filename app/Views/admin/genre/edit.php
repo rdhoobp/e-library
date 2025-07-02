@@ -26,10 +26,11 @@
                     <small class="text-muted float-end">Fill out the form</small>
                 </div>
                 <div class="card-body">
-                    <form action="<?= base_url('genre/input') ?>" method="post">
+                    <form action="<?= base_url('genre/edit/update') ?>" method="post">
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label" for="name">Genre Name</label>
                                 <div class="col-sm-10">
+                                    <input type="text" name="genre_id" id="genre_id" class="form-control" placeholder="Genre Name" value="<?= $genre['genre_id'] ?>"required style="display:none;">
                                     <input type="text" name="name" id="name" class="form-control" placeholder="Genre Name" value="<?= $genre['name'] ?>"required>
                                 </div>
                             </div>

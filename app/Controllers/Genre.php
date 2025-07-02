@@ -25,7 +25,8 @@ class Genre extends BaseController
         $data['title'] = "genre";
         return view('admin/genre/tambah.php', $data);
     }
-    public function genre_input() {
+    public function genre_input()
+    {
         $model = new GenreModel();
         $validate = $this->validate([
             'name' => [
@@ -55,5 +56,38 @@ class Genre extends BaseController
             return redirect()->back();
         }
     }
-    public function genre_update() {}
+    public function genre_update()
+    {
+        $model = new GenreModel();
+        $validate = $this->validate([
+            'name' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Kolom Nama Genre Harus Di isi!!!'
+                ]
+            ],
+            'description' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Kolom Deskripsi Harus Di isi!!!'
+                ]
+            ]
+        ]);
+        if (!$validate) {
+            return redirect()->back()->withInput();
+        }
+        $data['genre'] = $this->request->getVar(['genre_id', 'name', 'description']);
+        $data['title'] = "genre";
+        $update = $model->where('genre_id', $data['genre']['genre_id'])->set([
+            'name' => $data['genre']['name'],
+            'description' => $data['genre']['description']
+        ])->update();
+        if ($update) {
+            session()->setFlashdata("success", "Genre Berhasil Di Update!");
+            return redirect()->back();
+        } else {
+            session()->setFlashdata("error", $model->errors());
+            return redirect()->back();
+        }
+    }
 }
