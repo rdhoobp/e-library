@@ -33,10 +33,10 @@
                                             <i class="bx bx-dots-vertical-rounded"></i>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="<?= base_url('book/edit/' . $genre['genre_id']) ?>">
+                                            <a class="dropdown-item" href="<?= base_url('genre/edit/' . $genre['genre_id']) ?>">
                                                 <i class="bx bx-edit-alt me-1"></i> Edit
                                             </a>
-                                            <a class="dropdown-item" href="<?= base_url('book/delete/' . $genre['genre_id']) ?>" onclick="return confirm('Delete this genre?')">
+                                            <a class="dropdown-item" href="<?= base_url('genre/delete/' . $genre['genre_id']) ?>" onclick="return confirm('Delete this genre?')">
                                                 <i class="bx bx-trash me-1"></i> Delete
                                             </a>
                                         </div>
