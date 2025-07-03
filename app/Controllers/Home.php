@@ -10,7 +10,9 @@ class Home extends BaseController
 {
 	public function index()
 	{
-		return view('tampilan/main_page');
+		$model = new BookModel();
+		$data['book'] = $model->findAll();
+		return view('tampilan/main_page',$data);
 	}
 	public function login()
 	{

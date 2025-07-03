@@ -10,6 +10,19 @@
 				</button>
 
 				<div class="main-slider pattern-overlay">
+					<?php foreach ($book as $book): ?>
+						<div class="slider-item">
+							<div class="banner-content">
+								<h2 class="banner-title"><?= $book['title'] ?></h2>
+								<div class="btn-wrap">
+									<a href="<?= base_url('book/detail/' . $book['book_id']) ?>" class="btn btn-outline-accent btn-accent-arrow">Read More<i
+											class="icon icon-ns-arrow-right"></i></a>
+								</div>
+							</div><!--banner-content-->
+							<img src="<?= base_url("asset/img/book_cover/" . $book['cover']) ?>" alt="banner" class="banner-image">
+						</div><!--slider-item-->
+					<?php endforeach; ?>
+					<?php /*
 					<div class="slider-item">
 						<div class="banner-content">
 							<h2 class="banner-title">Laut Bercerita</h2>
@@ -38,6 +51,7 @@
 						<img src="<?= base_url("asset/img/book_cover/atomic-habits-james-clear.jpg") ?>" alt="banner" class="banner-image">
 					</div><!--slider-item-->
 
+					*/ ?>
 				</div><!--slider-->
 
 				<button class="next slick-arrow">
