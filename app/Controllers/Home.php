@@ -143,8 +143,8 @@ class Home extends BaseController
 			$data['genre'] = $genre->findAll();
 			$data['data'] = $model->where('book_id', $id)->first();
 			$counter = (int)$data['data']['hit_counter'];
-			$counter += 1;
-			var_dump($counter);exit;
+			$count = $counter + 1;
+			$model->where('book_id',$id)->set(['hit_counter'=>$count])->update();
 			return view('tampilan/book_detail.php', $data);
 		}else{
 			session()->setFlashdata("error","Anda Harus Login Terlebih Dahulu!!!");

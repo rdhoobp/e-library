@@ -19,6 +19,7 @@ class BookModel extends Model
         'cover',
         'pdf_link',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'hit_counter'
     ];
 }
