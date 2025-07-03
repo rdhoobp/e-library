@@ -15,7 +15,6 @@ class BookModel extends Model
         'publisher',
         'genre_id',
         'isbn',
-        'availability',
         'role',
         'cover',
         'pdf_link',

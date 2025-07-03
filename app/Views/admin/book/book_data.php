@@ -20,7 +20,6 @@
                             <th>Publisher</th>
                             <th>Genre</th>
                             <th>ISBN</th>
-                            <th>Availability</th>
                             <th>Cover</th>
                             <th>Actions</th>
                         </tr>
@@ -35,11 +34,6 @@
                                 <td><?= esc($book['publisher']) ?></td>
                                 <td><?= esc($book['genre_id']) ?></td>
                                 <td><?= esc($book['isbn']) ?></td>
-                                <td>
-                                    <span class="badge <?= ($book['availability'] == 'available') ? 'bg-label-success' : 'bg-label-danger' ?>">
-                                        <?= ucfirst($book['availability']) ?>
-                                    </span>
-                                </td>
                                 <td>
                                     <img src="<?= base_url('asset/img/book_cover/' . $book['cover']) ?>.jpg" alt="Cover" style="height: 60px; width: 40px; object-fit: cover;" class="rounded shadow-sm">
                                 </td>

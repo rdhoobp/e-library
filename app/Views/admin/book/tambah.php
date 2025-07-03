@@ -46,14 +46,6 @@
                                 <input type="text" name="isbn" id="isbn" class="form-control" placeholder="ISBN Number" required>
                             </div>
                         </div>
-
-                        <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" for="availability">Availability</label>
-                            <div class="col-sm-10">
-                                <input type="text" name="availability" id="availability" class="form-control" placeholder="e.g., Available / Not Available" required>
-                            </div>
-                        </div>
-
                         <div class="row mb-3">
                             <label class="col-sm-2 col-form-label" for="cover">Cover</label>
                             <div class="col-sm-10">
