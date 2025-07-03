@@ -8,7 +8,7 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">User Data</h5>
-                <a href="#" class="btn btn-primary">+ Add User</a>
+                <a href="<?= base_url('user/add') ?>" class="btn btn-primary">+ Add User</a>
             </div>
             <div class="table-responsive text-nowrap">
                 <table class="table">

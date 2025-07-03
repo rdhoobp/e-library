@@ -17,7 +17,7 @@
         <?php endforeach; ?>
     </div>
 <?php endif; ?>
-<form action="input" method="POST">
+<form action="<?= base_url('user/input') ?>" method="POST">
     <div class="row gy-3 overflow-hidden">
         <div class="col-12">
             <div class="form-floating mb-3">

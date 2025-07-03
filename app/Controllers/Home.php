@@ -25,8 +25,7 @@ class Home extends BaseController
 	public function usersetting($id)
 	{
 		if (session('id') != $id) {
-			echo "ID tidak sesuai";
-			exit;
+			return redirect()->to('/');
 		} else {
 			$model = new UserModel();
 			$data['data'] = $model->where('id_user', $id)->first();
@@ -35,6 +34,9 @@ class Home extends BaseController
 	}
 	public function change_password()
 	{
+		if (session('id') == null) {
+			return redirect()->to('/');
+		}
 		$model = new UserModel();
 		if (session('id') != null) {
 			$data['data'] = $model->where('id_user', session('id'))->first();
@@ -140,6 +142,9 @@ class Home extends BaseController
 			$model = new BookModel();
 			$data['genre'] = $genre->findAll();
 			$data['data'] = $model->where('book_id', $id)->first();
+			$counter = (int)$data['data']['hit_counter'];
+			$counter += 1;
+			var_dump($counter);exit;
 			return view('tampilan/book_detail.php', $data);
 		}else{
 			session()->setFlashdata("error","Anda Harus Login Terlebih Dahulu!!!");

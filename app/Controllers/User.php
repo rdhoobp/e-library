@@ -20,12 +20,20 @@ class User extends BaseController
         $data['title'] = "user";
         return view('admin/user/user_data.php', $data);
     }
-    public function user_edit()
+    public function user_edit($id)
     {
         if (session('role') != 1 || session('role') == null) {
             return redirect()->to('/');
         }
-        return view('admin/user/user_edit.php');
+        $model = new UserModel();
+        $data['user'] = $model->where('id_user',$id)->first();
+        $data['title'] = "user";
+        return view('admin/user/user_edit.php',$data);
+    }
+    public function user_add()
+    {
+        $data['title'] = "user";
+        return view('admin/user/add_user.php',$data);
     }
     public function user_input()
     {
