@@ -59,9 +59,9 @@
 												<a href="#" class="search-button search-toggle" data-selector="#header-wrap">
 													<i class="icon icon-search"></i>
 												</a>
-												<form role="search" method="get" class="search-box">
+												<form action="<?= base_url('book/cari/') ?>" role="search"class="search-box"method="get">
 													<input class="search-field text search-input" placeholder="Search"
-														type="search">
+														type="search"name="judul">
 												</form>
 											</div>
 										</div>

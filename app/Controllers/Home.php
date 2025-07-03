@@ -124,7 +124,15 @@ class Home extends BaseController
 		$data['title'] = "Library";
 		return view('tampilan/book.php', $data);
 	}
-
+	public function book_cari()
+	{
+		$model = new BookModel();
+		$judul = $this->request->getVar('judul');
+		$data['books'] = $model->like('title',$judul)->paginate(16);
+		$data['pager'] = $model->pager;
+		$data['title'] = "Library";
+		return view('tampilan/cari_book.php',$data);
+	}
 	public function book_detail($id)
 	{
 		$genre = new GenreModel();

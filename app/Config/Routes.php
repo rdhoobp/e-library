@@ -48,6 +48,7 @@ $routes->get('/forgot-password', 'Home::change_password');
 $routes->get('/logout', 'Home::session_terminate');
 $routes->get('/book/list','Home::book');
 $routes->get('/book/detail/(:num)','Home::book_detail/$1');
+$routes->get('/book/cari','Home::book_cari');
 // backend user
 $routes->get('/dashboard', 'Dashboard::index');
 $routes->get('/user/index', 'User::user_index');
