@@ -32,7 +32,12 @@
                                 <td><strong><?= esc($book['title']) ?></strong></td>
                                 <td><?= esc($book['author']) ?></td>
                                 <td><?= esc($book['publisher']) ?></td>
-                                <td><?= esc($book['genre_id']) ?></td>
+                                <td><?php 
+                                    foreach($genre as $genres){
+                                        if($genres['genre_id'] == $book['genre_id']){
+                                            echo $genres['name'];
+                                        }
+                                    } ?></td>
                                 <td><?= esc($book['isbn']) ?></td>
                                 <td>
                                     <img src="<?= base_url('asset/img/book_cover/' . $book['cover']) ?>.jpg" alt="Cover" style="height: 60px; width: 40px; object-fit: cover;" class="rounded shadow-sm">

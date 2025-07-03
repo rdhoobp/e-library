@@ -12,6 +12,9 @@ class User extends BaseController
     // }
     public function user_index()
     {
+        if (session('role') != 1 || session('role') == null) {
+            return redirect()->to('/');
+        }
         $model = new UserModel();
         $data['users'] = $model->findAll();
         $data['title'] = "user";
@@ -19,10 +22,16 @@ class User extends BaseController
     }
     public function user_edit()
     {
+        if (session('role') != 1 || session('role') == null) {
+            return redirect()->to('/');
+        }
         return view('admin/user/user_edit.php');
     }
     public function user_input()
     {
+        if (session('role') != 1 || session('role') == null) {
+            return redirect()->to('/');
+        }
         $model = new UserModel();
         $validate = $this->validate([
             'name' => [

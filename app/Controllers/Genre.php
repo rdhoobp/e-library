@@ -8,6 +8,9 @@ class Genre extends BaseController
 {
     public function index()
     {
+        if (session('role') != 1 || session('role') == null) {
+            return redirect()->to('/');
+        }
         $model = new GenreModel();
         $data['genre'] = $model->findAll();
         $data['title'] = "genre";
@@ -15,6 +18,9 @@ class Genre extends BaseController
     }
     public function edit($id)
     {
+        if (session('role') != 1 || session('role') == null) {
+            return redirect()->to('/');
+        }
         $model = new GenreModel();
         $data['genre'] = $model->where('genre_id', $id)->first();
         $data['title'] = "genre";
@@ -22,11 +28,17 @@ class Genre extends BaseController
     }
     public function tambah()
     {
+        if (session('role') != 1 || session('role') == null) {
+            return redirect()->to('/');
+        }
         $data['title'] = "genre";
         return view('admin/genre/tambah.php', $data);
     }
     public function genre_input()
     {
+        if (session('role') != 1 || session('role') == null) {
+            return redirect()->to('/');
+        }
         $model = new GenreModel();
         $validate = $this->validate([
             'name' => [
@@ -58,6 +70,9 @@ class Genre extends BaseController
     }
     public function genre_update()
     {
+        if (session('role') != 1 || session('role') == null) {
+            return redirect()->to('/');
+        }
         $model = new GenreModel();
         $validate = $this->validate([
             'name' => [
