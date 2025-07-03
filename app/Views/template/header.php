@@ -45,12 +45,11 @@
 							<div class="main-menu stellarnav">
 								<ul class="menu-list">
 									<li class="menu-item active"><a href="<?= base_url("/"); ?>">Home</a></li>
-									<li class="menu-item active"><a href="<?= base_url("/book") ?>">Library</a></li>
+									<li class="menu-item active"><a href="<?= base_url("/book/list") ?>">Library</a></li>
 									<li class="menu-item has-sub">
 										<a href="#pages" class="nav-link">Featured</a>
 										<ul>
 											<li><a href="#">Bookmark</a></li>
-											<li><a href="#">Read History</a></li>
 										</ul>
 									</li>
 									<li class="menu-item"><a href="#popular-books" class="nav-link">Popular</a></li>

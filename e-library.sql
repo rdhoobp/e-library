@@ -109,7 +109,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id_user`, `username`, `name`, `email`, `password`, `img`, `role`, `created_at`, `updated_at`) VALUES
-(5, 'admin', 'Raditya Abib', 'radityaabib511@gmail.com', '$2y$10$Fibb8YJmqGMEbQqXX0qhKOsJ6kmEBCPP5FUjcA.RSKu8wxpKslXRm', 'avatar1.jpg', 1, '2025-06-23 02:02:54', NULL),
+(5, 'admin', 'Raditya Abib', 'radityaabib511@gmail.com', '$2y$10$Fibb8YJmqGMEbQqXX0qhKOsJ6kmEBC00PP5FUjcA.RSKu8wxpKslXRm', 'avatar1.jpg', 1, '2025-06-23 02:02:54', NULL),
 (7, 'rido', 'ridoanjai', 'anjairidoGanteng@gmail.com', '$2y$10$Up5Mt06d4rxoZGF40c1F9uJ/ea7xv7QOty7nOwOm9RKttNjxN6GtC', NULL, 0, '2025-06-25 06:14:33', NULL);
 
 --

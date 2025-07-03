@@ -26,9 +26,9 @@
                 <div class="col-md-3 mb-4">
                     <div class="product-item">
                         <figure class="product-style">
-                            <img src="<?= base_url('asset/img/book_cover/' . $book['cover']) ?>.jpg" alt="<?= esc($book['title']) ?>" class="product-item">
+                            <img src="<?= base_url('asset/img/book_cover/' . $book['cover']) ?>" alt="<?= esc($book['title']) ?>" class="product-item">
                             <button type="button" class="add-to-cart" data-product-tile="add-to-cart">
-                                <a href="book/detail/<?= $book['book_id'] ?> ">READ NOW!</a>
+                                <a href="<?= base_url('book/detail/'.$book['book_id']) ?> ">READ NOW!</a>
                             </button>
                         </figure>
                         <figcaption>

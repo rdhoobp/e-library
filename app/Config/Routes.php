@@ -46,8 +46,8 @@ $routes->post('/user/settings/update', 'Home::userupdate');
 $routes->post('/user/password/update', 'Home::passwordupdate');
 $routes->get('/forgot-password', 'Home::change_password');
 $routes->get('/logout', 'Home::session_terminate');
-$routes->get('/book', 'Home::book');
-$routes->get('/book/detail/(:num)', 'Home::book_detail/$1');
+$routes->get('/book/list','Home::book');
+$routes->get('/book/detail/(:num)','Home::book_detail/$1');
 // backend user
 $routes->get('/dashboard', 'Dashboard::index');
 $routes->get('/user/index', 'User::user_index');

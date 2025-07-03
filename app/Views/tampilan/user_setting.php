@@ -14,7 +14,11 @@
             <div class="col-lg-4 mb-4">
                 <div class="card border-0 shadow-sm rounded-2">
                     <div class="card-body text-center">
-                        <img src="<?= base_url('asset/img/avatar/' . $data['img']) ?>" alt="User Avatar" class="rounded-circle mb-3 mt-2" width="100" height="100">
+                        <?php if($data['img'] == NULL) { ?>
+                            <img src="<?= base_url('asset/img/avatar/default.jpg') ?>" alt="User Avatar" class="rounded-circle mb-3 mt-2" width="100" height="100">
+                        <?php } else { ?>
+                            <img src="<?= base_url('asset/img/avatar/' . $data['img']) ?>" alt="User Avatar" class="rounded-circle mb-3 mt-2" width="100" height="100">
+                        <?php }?>
                         <h2 class="mb-0"><?= $data['name'] ?></h2>
                         <small class="text-muted">Member since <?= date('Y', strtotime($data['created_at'] ?? '2024-01-01')) ?></small>
                     </div>
@@ -80,7 +84,11 @@
                             <div class="col-md-4">
                                 <div class="text-center">
                                     <input type="text" value="<?= $data['img'] ?>" name="old_profile" style="display:none;">
+                                    <?php if($data['img'] == NULL) { ?>
+                                    <img src="<?= base_url('asset/img/avatar/default.jpg') ?>" class="img-fluid border border-4 mb-2" width="170" height="170" alt="Profile Picture">
+                                    <?php } else { ?>
                                     <img src="<?= base_url('asset/img/avatar/' . $data['img']) ?>" class="img-fluid border border-4 mb-2" width="170" height="170" alt="Profile Picture">
+                                    <?php } ?>
                                     <div>
                                         <label for="profile"><span class="btn btn-primary btn-sm"><i class="fa fa-upload"></i></span></label>
                                         <input type="file" name="profile" id="profile" style="display:none;">

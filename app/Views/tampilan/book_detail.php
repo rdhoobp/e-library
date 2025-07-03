@@ -5,13 +5,19 @@
         <div class="row">
             <div class="col-md-5">
                 <a href="#" class="product-image">
-                    <img src="<?= base_url('asset/img/book_cover/laut-bercerita-leila-s-chudori') ?>.jpg" alt="" class="product-image">
+                    <img src="<?= base_url("asset/img/book_cover/" . $data['cover']) ?>" alt="" class="product-image">
                 </a>
             </div>
             <div class="col-md-7 pl-5">
                 <div class="product-detail">
-                    <span>Fiksi</span>
-                    <h1>HAHAHAHHAHA</h1>
+                    <span>
+                        <?php foreach ($genre as $genre): ?>
+                            <?php if ($genre['genre_id'] == $data['genre_id']) {
+                                echo $genre['name'];
+                            } ?>
+                        <?php endforeach; ?>
+                    </span>
+                    <h1><?= $data['title'] ?></h1>
                     <!-- <div class="rating-container d-flex align-items-center text-warning mb-4"></div> -->
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo ut iure quae reprehenderit voluptates quas, ad assumenda nemo quasi corrupti ea eveniet commodi dolor magni praesentium adipisci provident unde neque?</p>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis sequi ad, mollitia commodi aut rem, quod asperiores quae consectetur totam vitae id? Vero aut quas facilis vel nemo repellat corporis?</p>
@@ -25,6 +31,15 @@
         </div>
     </div>
 </section>
+<?php
+if (!isset($data['pdf_link']) || $data['pdf_link'] == 'null') {
+} else { ?>
+    <div>
+        <embed src="<?= base_url("asset/pdf/". $data['pdf_link']) ?>" width="800" height="500">
+    </div>
+<?php }
+?>
+
 <section class="product-tabs mt-5">
     <div class="container">
         <div class="row">

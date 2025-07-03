@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\UserModel;
 use App\Models\BookModel;
+use App\Models\GenreModel;
 
 class Home extends BaseController
 {
@@ -122,9 +123,13 @@ class Home extends BaseController
 		return view('tampilan/book.php', $data);
 	}
 
-	public function book_detail()
+	public function book_detail($id)
 	{
-		return view('tampilan/book_detail.php');
+		$genre = new GenreModel();
+		$model = new BookModel();
+		$data['genre'] = $genre->findAll();
+		$data['data'] = $model->where('book_id', $id)->first();
+		return view('tampilan/book_detail.php',$data);
 	}
 	public function passwordupdate()
 	{
