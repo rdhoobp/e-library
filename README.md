@@ -1,58 +1,44 @@
-# CodeIgniter 4 Framework
+# Aplikasi Web Pengelolaan Perpustakaan Mini (MiniLibApp)
 
-## What is CodeIgniter?
+## Deskripsi
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](http://codeigniter.com).
+Website ini dikembangkan untuk memenuhi tugas proyek mata kuliah Pemrograman Web. Website ini menggunakan HTML, CSS, JavaScript, PHP dan MySQL/Textfile. Aplikasi ini memiliki fitur utama seperti:
+- register
+- login
+- baca buku
+- costum profile
+- nambah buku
+- edit buku
+- crud buku
+- crud user
+- crud genre buku
+- 
+- logout
 
-This repository holds the distributable version of the framework,
-including the user guide. It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+## Kelompok
+-----------------------------------------------------------------------------
+| Nama Anggota             | NIM        | Peran                             |
+| ---------------------    | ---------- | ------------------------------    |
+| Rafi Ardan Fathiy Story  | 2400018050 | Frontend Developer                |
+| Raihan Rafi Samudra      | 2400018041 | Backend Developer                 |
+| Dimas Idha Wibowo        | 2400018049 | Database Manager                  |
+| Ridho Budi Pamularso     | 2400018053 | Github Manager                    |
+| Raditya Abib Shanau      | 2400018051 | Project Manager / Tester          |
 
-More information about the plans for version 4 can be found in [the announcement](http://forum.codeigniter.com/thread-62615.html) on the forums.
+## Teknologi yang Digunakan
+- Framework (Code Igniter 4, Bootstrap)
+- HTML, PHP, CSS
+- JavaScript
+- XAMPP
+- GitHub
 
-The user guide corresponding to this version of the framework can be found
-[here](https://codeigniter4.github.io/userguide/).
-
-
-## Important Change with index.php
-
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
-
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
-
-**Please** read the user guide for a better explanation of how CI4 works!
-
-## Repository Management
-
-We use Github issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
-
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
-
-## Contributing
-
-We welcome contributions from the community.
-
-Please read the [*Contributing to CodeIgniter*](https://github.com/codeigniter4/CodeIgniter4/blob/develop/contributing.md) section in the development repository.
-
-## Server Requirements
-
-PHP version 7.3 or higher is required, with the following extensions installed:
-
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
-
-Additionally, make sure that the following extensions are enabled in your PHP:
-
-- json (enabled by default - don't turn it off)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php)
-- xml (enabled by default - don't turn it off)
-
-Untuk settingan pada file .env perlu di uncommand pada kode database.default.hostname hingga database.default.DBDriver
+## Cara Menjalankan Proyek
+1. Clone link github
+2. Aktifkan MySQL di XAMPP versi 5 keatas
+3. Buat Database baru dengan nama "e-library"
+4. Pilih menu impor
+5. Kemudian cari e-library.sql didalam folder e-library yang sudah di clone
+6. Pilih e-library kemudian tunggu hingga proses selesai
+7. Aktifkan Apache dan MySQL(Bila Belum) di XAMPP
+8. Ketik "localhost/e-library/" di browser anda
+9. E-Library siap dijalankan.
