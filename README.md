@@ -27,7 +27,7 @@ Website ini dikembangkan untuk memenuhi tugas proyek mata kuliah Pemrograman Web
 
 ## Teknologi yang Digunakan
 - Framework (Code Igniter 4, Bootstrap)
-- HTML, PHP, CSS
+- HTML, PHP versi 8.1.25, CSS
 - JavaScript
 - XAMPP
 - GitHub
