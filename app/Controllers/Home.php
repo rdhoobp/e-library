@@ -12,7 +12,7 @@ class Home extends BaseController
 	{
 		$model = new BookModel();
 		$data['book'] = $model->findAll();
-		return view('tampilan/main_page',$data);
+		return view('tampilan/main_page', $data);
 	}
 	public function login()
 	{
@@ -128,18 +128,23 @@ class Home extends BaseController
 	{
 		$model = new BookModel();
 		$judul = $this->request->getVar('judul');
-		$data['books'] = $model->like('title',$judul)->paginate(16);
+		$data['books'] = $model->like('title', $judul)->paginate(16);
 		$data['pager'] = $model->pager;
 		$data['title'] = "Library";
-		return view('tampilan/cari_book.php',$data);
+		return view('tampilan/cari_book.php', $data);
 	}
 	public function book_detail($id)
 	{
-		$genre = new GenreModel();
-		$model = new BookModel();
-		$data['genre'] = $genre->findAll();
-		$data['data'] = $model->where('book_id', $id)->first();
-		return view('tampilan/book_detail.php',$data);
+		if (session('id') != null) {
+			$genre = new GenreModel();
+			$model = new BookModel();
+			$data['genre'] = $genre->findAll();
+			$data['data'] = $model->where('book_id', $id)->first();
+			return view('tampilan/book_detail.php', $data);
+		}else{
+			session()->setFlashdata("error","Anda Harus Login Terlebih Dahulu!!!");
+			return redirect()->to(base_url('login'));
+		}
 	}
 	public function passwordupdate()
 	{
