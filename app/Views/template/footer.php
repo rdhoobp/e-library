@@ -7,52 +7,35 @@
 				<div class="footer-item">
 					<div class="company-brand">
 						<img src="<?= base_url("asset/img/logos/icon-dark.png") ?>" alt="logo" class="footer-logo">
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sagittis sed ptibus liberolectus
-							nonet psryroin. Amet sed lorem posuere sit iaculis amet, ac urna. Adipiscing fames
-							semper erat ac in suspendisse iaculis.</p>
+						<p>E-Lib merupakan tempat untuk membaca buku secara virtual yang masih dalam masa pengembangan, segala percobaan akan kami lakukan untuk mengembangkan E-Lib</p>
 					</div>
 				</div>
 
 			</div>
 
-			<div class="col-md-2"></div>
+			<div class="col-md-4"></div>
+
 			<div class="col-md-2">
 
 				<div class="footer-menu">
-					<h5>Discover</h5>
-					<ul class="menu-list">
-						<li class="menu-item">
-							<a href="#">Home</a>
-						</li>
-						<li class="menu-item">
-							<a href="#">Books</a>
-						</li>
-					</ul>
-				</div>
-
-			</div>
-			<div class="col-md-2">
-
-				<div class="footer-menu">
-					<h5>My account</h5>
-					<ul class="menu-list">
-						<li class="menu-item">
-							<a href="#">Sign In</a>
-						</li>
-
-						<!-- If Already Log In -->
-
-						<!-- <li class="menu-item">
-								<a href="#">View Cart</a>
-							</li> -->
-
-						<li class="menu-item">
-							<a href="#">My Wishtlist</a>
-						</li>
-						<li class="menu-item">
-							<a href="#">Track My Order</a>
-						</li>
-					</ul>
+					<?php if (session()->get('id')): ?>
+						<h5>My Account</h5>
+						<ul class="menu-list">
+							<li class="menu-item">
+								<a href="<?= base_url('user/edit/' . session()->get('id')) ?>">Edit Profile</a>
+							</li>
+							<li class="menu-item">
+								<a href="<?= base_url('logout') ?>">Logout</a>
+							</li>
+						</ul>
+					<?php else: ?>
+						<h5>Account</h5>
+						<ul class="menu-list">
+							<li class="menu-item">
+								<a href="<?= base_url('login') ?>">Sign In</a>
+							</li>
+						</ul>
+					<?php endif; ?>
 				</div>
 
 			</div>
@@ -61,14 +44,14 @@
 				<div class="footer-menu">
 					<h5>Help</h5>
 					<ul class="menu-list">
-						<li class="menu-item">
+						<!-- <li class="menu-item">
 							<a href="#">Report a problem</a>
 						</li>
 						<li class="menu-item">
 							<a href="#">Suggesting edits</a>
-						</li>
+						</li> -->
 						<li class="menu-item">
-							<a href="#">Contact us</a>
+							<a href="https://www.instagram.com/radityaabib/">Contact us</a>
 						</li>
 					</ul>
 				</div>
@@ -94,7 +77,7 @@
 									href="https://discord.gg/mVTunrMR" target="_blank">E-Lib & Co.</a></p>
 						</div>
 
-						<div class="col-md-6">
+						<!-- <div class="col-md-6">
 							<div class="social-links align-right">
 								<ul>
 									<li>
@@ -105,7 +88,7 @@
 									</li>
 								</ul>
 							</div>
-						</div>
+						</div> -->
 
 					</div>
 				</div><!--grid-->

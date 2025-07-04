@@ -57,29 +57,28 @@
 						<div class="tab-content pt-4">
 							<?php foreach ($genre as $genres): ?>
 								<div class="tab-pane fade" id="<?= $genres['genre_id'] ?>" role="tabpanel">
-
-									<?php foreach ($book_genres as $item): ?>
-										<?php if ($genres['genre_id'] == $item['genre_id']) { ?>
-											<?php if ($genres['genre_id'] == $item['genre_id']) {
-											?>
-												<div class="col-md-3 mb-4">
-													<div class="product-item">
-														<figure class="product-style">
-															<img src="<?= base_url('asset/img/book_cover/' . $item['cover']) ?>" alt="<?= esc($item['title']) ?>" class="product-item">
-															<a href="<?= base_url('book/detail/' . $item['book_id']) ?>">
-																<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Read</button>
-															</a>
-														</figure>
-														<figcaption>
-															<h3><?= esc($item['title']) ?></h3>
-															<span><?= esc($item['author']) ?></span>
-														</figcaption>
+									<div class="row">
+										<?php foreach ($book_genres as $item): ?>
+											<?php if ($genres['genre_id'] == $item['genre_id']) { ?>
+												<?php if ($genres['genre_id'] == $item['genre_id']) { ?>
+													<div class="col-md-3 mb-4">
+														<div class="product-item">
+															<figure class="product-style">
+																<img src="<?= base_url('asset/img/book_cover/' . $item['cover']) ?>" alt="<?= esc($item['title']) ?>" class="product-item">
+																<a href="<?= base_url('book/detail/' . $item['book_id']) ?>">
+																	<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Read</button>
+																</a>
+															</figure>
+															<figcaption>
+																<h3><?= esc($item['title']) ?></h3>
+																<span><?= esc($item['author']) ?></span>
+															</figcaption>
+														</div>
 													</div>
-												</div>
-											<?php }
-											?>
-										<?php } ?>
-									<?php endforeach; ?>
+												<?php } ?>
+											<?php } ?>
+										<?php endforeach; ?>
+									</div>
 								</div>
 							<?php endforeach; ?>
 						</div>
@@ -176,7 +175,6 @@
 	<?php endif; ?>
 <?php endforeach; ?>
 <section id="special-offer" class="bookshelf pb-5 mb-5">
-
 	<div class="section-header align-center">
 		<div class="title">
 			<span>Grab your opportunity</span>
@@ -189,78 +187,18 @@
 			<div class="inner-content">
 				<div class="product-list" data-aos="fade-up">
 					<div class="grid product-grid">
-						<div class="product-item">
-							<figure class="product-style">
-								<img src="images/product-item5.jpg" alt="Books" class="product-item">
-								<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
-									Cart</button>
-							</figure>
-							<figcaption>
-								<h3>Simple way of piece life</h3>
-								<span>Armor Ramsey</span>
-								<div class="item-price">
-									<span class="prev-price">$ 50.00</span>$ 40.00
-								</div>
-						</div>
-						</figcaption>
-
-						<div class="product-item">
-							<figure class="product-style">
-								<img src="images/product-item6.jpg" alt="Books" class="product-item">
-								<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
-									Cart</button>
-							</figure>
-							<figcaption>
-								<h3>Great travel at desert</h3>
-								<span>Sanchit Howdy</span>
-								<div class="item-price">
-									<span class="prev-price">$ 30.00</span>$ 38.00
-								</div>
-						</div>
-						</figcaption>
-
-						<div class="product-item">
-							<figure class="product-style">
-								<img src="images/product-item7.jpg" alt="Books" class="product-item">
-								<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
-									Cart</button>
-							</figure>
-							<figcaption>
-								<h3>The lady beauty Scarlett</h3>
-								<span>Arthur Doyle</span>
-								<div class="item-price">
-									<span class="prev-price">$ 35.00</span>$ 45.00
-								</div>
-						</div>
-						</figcaption>
-
-						<div class="product-item">
-							<figure class="product-style">
-								<img src="images/product-item8.jpg" alt="Books" class="product-item">
-								<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
-									Cart</button>
-							</figure>
-							<figcaption>
-								<h3>Once upon a time</h3>
-								<span>Klien Marry</span>
-								<div class="item-price">
-									<span class="prev-price">$ 25.00</span>$ 35.00
-								</div>
-						</div>
-						</figcaption>
-
-						<div class="product-item">
-							<figure class="product-style">
-								<img src="images/product-item2.jpg" alt="Books" class="product-item">
-								<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
-									Cart</button>
-							</figure>
-							<figcaption>
-								<h3>Simple way of piece life</h3>
-								<span>Armor Ramsey</span>
-								<div class="item-price">$ 40.00</div>
-							</figcaption>
-						</div>
+						<?php foreach ($book_on_the_rise as $book): ?>
+							<div class="product-item">
+								<figure class="product-style">
+									<img src="<?= base_url('asset/img/book_cover/' . $book['cover']) ?>" alt="<?= esc($book['title']) ?>" class="product-item" />
+									<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to Cart</button>
+								</figure>
+								<figcaption>
+									<h3><?= esc($book['title']) ?></h3>
+									<span><?= esc($book['author']) ?></span>
+								</figcaption>
+							</div>
+						<?php endforeach; ?>
 					</div><!--grid-->
 				</div>
 			</div><!--inner-content-->
@@ -268,7 +206,8 @@
 	</div>
 </section>
 
-<section id="subscribe">
+
+<!-- <section id="subscribe">
 	<div class="container">
 		<div class="row justify-content-center">
 
@@ -302,6 +241,6 @@
 
 		</div>
 	</div>
-</section>
+</section> -->
 
 <?= view('template/footer.php') ?>
