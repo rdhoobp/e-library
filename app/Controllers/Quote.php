@@ -48,39 +48,38 @@ class Quote extends BaseController
             return redirect()->to('/');
         }
 
-        $model = new QuoteModel();
+        $model = new \App\Models\QuoteModel();
+
         $validate = $this->validate([
-            'quote' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => 'Kolom Quote Harus Di isi!!!'
-                ]
-            ],
-            'author' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => 'Kolom Author Harus Di isi!!!'
-                ]
-            ]
+            'quote' => 'required',
+            'author' => 'required',
+            'active' => 'required|in_list[0,1]'
         ]);
 
         if (!$validate) {
-            return redirect()->back()->withInput();
+            return redirect()->back()->withInput()->with('error', $this->validator->getErrors());
         }
 
-        $data = [
-            'quote'  => $this->request->getPost('quote'),
+        $active = $this->request->getPost('active');
+
+        // deactivate all if setting a new one as active
+        if ($active == '1') {
+            $model->where('active', 1)->set(['active' => 0])->update();
+        }
+
+        $saved = $model->save([
+            'quote' => $this->request->getPost('quote'),
             'author' => $this->request->getPost('author'),
-            'active' => $this->request->getPost('active') ?? 1
-        ];
+            'active' => $active,
+        ]);
 
-        if ($model->save($data)) {
-            session()->setFlashdata("success", "Quote berhasil ditambahkan!");
-            return redirect()->to('/quote');
+        if ($saved) {
+            session()->setFlashdata('success', 'Quote successfully added!');
         } else {
-            session()->setFlashdata("error", $model->errors());
-            return redirect()->back();
+            session()->setFlashdata('error', $model->errors());
         }
+
+        return redirect()->back();
     }
 
     public function quote_update()
@@ -89,42 +88,44 @@ class Quote extends BaseController
             return redirect()->to('/');
         }
 
-        $model = new QuoteModel();
+        $model = new \App\Models\QuoteModel();
+
         $validate = $this->validate([
-            'quote' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => 'Kolom Quote Harus Di isi!!!'
-                ]
-            ],
-            'author' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => 'Kolom Author Harus Di isi!!!'
-                ]
-            ]
+            'quote' => 'required',
+            'author' => 'required',
+            'active' => 'required|in_list[0,1]'
         ]);
 
         if (!$validate) {
-            return redirect()->back()->withInput();
+            return redirect()->back()->withInput()->with('error', $this->validator->getErrors());
         }
 
         $id = $this->request->getPost('id');
+        $quoteText = $this->request->getPost('quote');
+        $author = $this->request->getPost('author');
+        $active = $this->request->getPost('active');
 
-        $update = $model->update($id, [
-            'quote'  => $this->request->getPost('quote'),
-            'author' => $this->request->getPost('author'),
-            'active' => $this->request->getPost('active') ?? 1
+        // if user selects active = 1, set all others to inactive first
+        if ($active == '1') {
+            $model->where('active', 1)->set(['active' => 0])->update();
+        }
+
+        // update the current quote
+        $updated = $model->update($id, [
+            'quote' => $quoteText,
+            'author' => $author,
+            'active' => $active,
         ]);
 
-        if ($update) {
-            session()->setFlashdata("success", "Quote berhasil diperbarui!");
-            return redirect()->to('/quote');
+        if ($updated) {
+            session()->setFlashdata('success', 'Quote successfully updated!');
         } else {
-            session()->setFlashdata("error", $model->errors());
-            return redirect()->back();
+            session()->setFlashdata('error', 'Failed to update quote.');
         }
+
+        return redirect()->back();
     }
+
 
     public function delete($id)
     {
