@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 04 Jul 2025 pada 02.12
+-- Waktu pembuatan: 04 Jul 2025 pada 03.56
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.1.25
 
@@ -90,6 +90,27 @@ INSERT INTO `genre` (`genre_id`, `name`, `description`, `created_at`, `updated_a
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `quotes`
+--
+
+CREATE TABLE `quotes` (
+  `id` int(11) NOT NULL,
+  `quote` varchar(255) NOT NULL,
+  `author` varchar(255) DEFAULT NULL,
+  `active` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `quotes`
+--
+
+INSERT INTO `quotes` (`id`, `quote`, `author`, `active`) VALUES
+(1, 'Masaklah Kode Sebelum Kamu Dimasak Kode', 'Raditya Abib S.', 1),
+(2, 'Besok Mungkin Kita Sampai', 'Hindia', 0);
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `user`
 --
 
@@ -131,6 +152,12 @@ ALTER TABLE `genre`
   ADD PRIMARY KEY (`genre_id`);
 
 --
+-- Indeks untuk tabel `quotes`
+--
+ALTER TABLE `quotes`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indeks untuk tabel `user`
 --
 ALTER TABLE `user`
@@ -151,6 +178,12 @@ ALTER TABLE `book`
 --
 ALTER TABLE `genre`
   MODIFY `genre_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT untuk tabel `quotes`
+--
+ALTER TABLE `quotes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `user`
