@@ -5,18 +5,23 @@ namespace App\Controllers;
 use App\Models\UserModel;
 use App\Models\BookModel;
 use App\Models\GenreModel;
+use App\Models\QuoteModel;
 
 class Home extends BaseController
 {
 	public function index()
 	{
 		$bookModel = new BookModel();
+		$quoteModel = new QuoteModel();
 		// $genreModel = new GenreModel();
 		$data['book'] = $bookModel->orderBy('hit_counter', 'DESC')->findAll();
 		$bookModel = new BookModel();
 		$data['best_selling'] = $bookModel->orderBy('hit_counter', 'DESC')->first();
 		$data['book_in_general'] = $bookModel->orderBy('hit_counter', 'ASC')->findAll(4);
 		$data['book_genres'] = $bookModel->orderBy('hit_counter', 'DESC')->findAll(4);
+		$data['quotes'] = $quoteModel->findAll();
+		// var_dump($data['quotes']);
+		// exit;
 		return view('tampilan/main_page', $data);
 	}
 	public function login()

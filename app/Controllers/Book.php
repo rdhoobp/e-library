@@ -161,7 +161,7 @@ class Book extends BaseController
         $book = $model->find($id);
         if (!$book) {
             session()->setFlashdata("error", "Book not found.");
-            return redirect()->to('/book');
+            return redirect()->to('/book/index');
         }
 
         // Validate input
