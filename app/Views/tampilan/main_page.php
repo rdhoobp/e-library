@@ -44,30 +44,47 @@
 					</div>
 					<h2 class="section-title">Popular Books</h2>
 				</div>
+				<section class="product-tabs mt-5">
+					<div class="container">
+						<ul class="nav nav-tabs justify-content-center" role="tablist">
+							<?php foreach ($genre as $genres): ?>
+								<li class="nav-item">
+									<button class="nav-link" data-bs-toggle="tab" data-bs-target="#<?= $genres['genre_id'] ?>" type="button" role="tab"><?= $genres['name'] ?></button>
+								</li>
+							<?php endforeach; ?>
+						</ul>
 
-				<div class="tab-content">
-					<div id="all-genre" data-tab-content class="active">
-						<div class="row">
-							<?php foreach ($book_genres as $item): ?>
-								<div class="col-md-3 mb-4">
-									<div class="product-item">
-										<figure class="product-style">
-											<img src="<?= base_url('asset/img/book_cover/' . $item['cover']) ?>" alt="<?= esc($item['title']) ?>" class="product-item">
-											<a href="<?= base_url('book/detail/' . $item['book_id']) ?>">
-												<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Read</button>
-											</a>
-										</figure>
-										<figcaption>
-											<h3><?= esc($item['title']) ?></h3>
-											<span><?= esc($item['author']) ?></span>
-										</figcaption>
-									</div>
+						<div class="tab-content pt-4">
+							<?php foreach ($genre as $genres): ?>
+								<div class="tab-pane fade" id="<?= $genres['genre_id'] ?>" role="tabpanel">
+
+									<?php foreach ($book_genres as $item): ?>
+										<?php if ($genres['genre_id'] == $item['genre_id']) { ?>
+											<?php if ($genres['genre_id'] == $item['genre_id']) {
+											?>
+												<div class="col-md-3 mb-4">
+													<div class="product-item">
+														<figure class="product-style">
+															<img src="<?= base_url('asset/img/book_cover/' . $item['cover']) ?>" alt="<?= esc($item['title']) ?>" class="product-item">
+															<a href="<?= base_url('book/detail/' . $item['book_id']) ?>">
+																<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Read</button>
+															</a>
+														</figure>
+														<figcaption>
+															<h3><?= esc($item['title']) ?></h3>
+															<span><?= esc($item['author']) ?></span>
+														</figcaption>
+													</div>
+												</div>
+											<?php }
+											?>
+										<?php } ?>
+									<?php endforeach; ?>
 								</div>
 							<?php endforeach; ?>
 						</div>
 					</div>
-				</div>
-
+				</section>
 			</div><!--inner-tabs-->
 
 		</div>

@@ -18,10 +18,9 @@ class Home extends BaseController
 		$bookModel = new BookModel();
 		$data['best_selling'] = $bookModel->orderBy('hit_counter', 'DESC')->first();
 		$data['book_in_general'] = $bookModel->orderBy('hit_counter', 'ASC')->findAll(4);
-		$data['book_genres'] = $bookModel->orderBy('hit_counter', 'DESC')->findAll(4);
+		$data['book_genres'] = $bookModel->orderBy('hit_counter', 'DESC')->findAll();
 		$data['quotes'] = $quoteModel->findAll();
-		// var_dump($data['quotes']);
-		// exit;
+		$data['genre'] = $bookModel->join('genre','genre.genre_id = book.genre_id')->groupBy('name')->findAll();
 		return view('tampilan/main_page', $data);
 	}
 	public function login()
