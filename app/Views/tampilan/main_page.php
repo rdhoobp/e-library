@@ -142,7 +142,9 @@
 								<div class="product-item">
 									<figure class="product-style">
 										<img src="<?= base_url('asset/img/book_cover/' . $book['cover']) ?>" alt="<?= esc($book['title']) ?>" class="product-item">
-										<button type="button" class="add-to-cart">Add to Cart</button>
+										<a href="<?= base_url('book/detail/' . $book['book_id']) ?>">
+											<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Read</button>
+										</a>
 									</figure>
 									<figcaption>
 										<h3><?= esc($book['title']) ?></h3>
@@ -191,7 +193,9 @@
 							<div class="product-item">
 								<figure class="product-style">
 									<img src="<?= base_url('asset/img/book_cover/' . $book['cover']) ?>" alt="<?= esc($book['title']) ?>" class="product-item" />
-									<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to Cart</button>
+									<a href="<?= base_url('book/detail/' . $book['book_id']) ?>">
+										<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Read</button>
+									</a>
 								</figure>
 								<figcaption>
 									<h3><?= esc($book['title']) ?></h3>
