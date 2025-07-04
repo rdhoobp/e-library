@@ -75,7 +75,7 @@ $routes->get('/genre/delete/(:num)', 'Genre::delete/$1');
 //backend quotes
 $routes->get('/quote', 'Quote::index');
 $routes->get('/quote/edit/(:num)', 'Quote::edit/$1');
-$routes->get('/quote/tambah', 'Quote::tambah');
+$routes->get('/quote/add', 'Quote::tambah');
 $routes->post('/quote/input', 'Quote::quote_input');
 $routes->post('/quote/update', 'Quote::quote_update');
 $routes->get('/quote/delete/(:num)', 'Quote::delete/$1');

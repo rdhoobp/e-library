@@ -200,6 +200,13 @@
             </ul>
           </li>
 
+          <li class="menu-item <?= ($title == 'quote') ? 'active' : '' ?>">
+            <a href="<?= base_url("/quote") ?>" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-book"></i>
+              <div data-i18n="Analytics">Quote</div>
+            </a>
+          </li>
+
         </ul>
       </aside>
       <!-- / Menu -->
