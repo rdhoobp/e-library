@@ -26,6 +26,7 @@
 </div>
 <!-- / Layout wrapper -->
 
+
 <!-- Core JS -->
 <!-- build:js assets/vendor/js/core.js -->
 <script src="<?= base_url("asset/backend/assets/vendor/libs/jquery/jquery.js") ?>"></script>

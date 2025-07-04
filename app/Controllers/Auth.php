@@ -29,22 +29,29 @@ class Auth extends BaseController
 	public function auth()
 	{
 		$session = session();
-		$email = $this->request->getVar('email');
+		$identity = $this->request->getVar('identity'); // username OR email
 		$password = $this->request->getVar('password');
-		//$password = password_hash($pasword,PASSWORD_DEFAULT);
-		$data = $this->model->where('email', $email)->first();
+
+		// Search by email OR username
+		$data = $this->model
+			->where('email', $identity)
+			->orWhere('username', $identity)
+			->first();
+
 		if ($data) {
 			$pass = $data['password'];
 			$verify_pass = password_verify($password, $pass);
 			if ($verify_pass) {
 				$ses_data = [
-					'id' => $data['id_user'],
-					'name' => $data['name'],
-					'email' => $data['email'],
+					'id'       => $data['id_user'],
+					'name'     => $data['name'],
+					'email'    => $data['email'],
 					'username' => $data['username'],
-					'role' => $data['role']
+					'role'     => $data['role'],
+					'img'      => $data['img'],
 				];
 				$session->set($ses_data);
+
 				if (session('role') == 1) {
 					return redirect()->to('/dashboard');
 				}
@@ -54,7 +61,7 @@ class Auth extends BaseController
 				return redirect()->back();
 			}
 		} else {
-			$session->setFlashdata("error", "Email tidak ditemukan!!");
+			$session->setFlashdata("error", "Username atau Email tidak ditemukan!!");
 			return redirect()->back();
 		}
 	}

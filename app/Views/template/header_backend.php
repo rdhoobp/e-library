@@ -10,44 +10,44 @@
 
 <head>
   <style type="text/css">
-		.progress {
-			display: inline-block;
-			background-color: #f5f5f5;
-			border-radius: 4px;
-			box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
-			height: 20px;
-			width: 300px;
-			margin-top: 2px;
-		}
+    .progress {
+      display: inline-block;
+      background-color: #f5f5f5;
+      border-radius: 4px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
+      height: 20px;
+      width: 300px;
+      margin-top: 2px;
+    }
 
-		.progress .progress-bar {
-			height: 100%;
-			width: 0%;
-			background-color: #5cb85c;
-			border-radius: 4px;
-			background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-			background-size: 40px 40px;
-			animation: 2s linear 0s normal none infinite running progress-bar-stripes;
-		}
+    .progress .progress-bar {
+      height: 100%;
+      width: 0%;
+      background-color: #5cb85c;
+      border-radius: 4px;
+      background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+      background-size: 40px 40px;
+      animation: 2s linear 0s normal none infinite running progress-bar-stripes;
+    }
 
-		.progress .progress-finished {
-			height: 100%;
-			width: 100%;
-			background-color: #5cb85c;
-			border-radius: 4px;
-		}
+    .progress .progress-finished {
+      height: 100%;
+      width: 100%;
+      background-color: #5cb85c;
+      border-radius: 4px;
+    }
 
-		@keyframes progress-bar-stripes {
-			0% {
-				background-position: 40px 0;
-			}
+    @keyframes progress-bar-stripes {
+      0% {
+        background-position: 40px 0;
+      }
 
-			100% {
-				background-position: 0 0;
-			}
-		}
-	</style>
-	<script type="text/javascript" src="<?= base_url('asset/backend/upload_file/md5.js') ?>"></script>
+      100% {
+        background-position: 0 0;
+      }
+    }
+  </style>
+  <script type="text/javascript" src="<?= base_url('asset/backend/upload_file/md5.js') ?>"></script>
   <meta charset="utf-8" />
   <meta
     name="viewport"
@@ -178,18 +178,26 @@
             </a>
           </li>
 
-          <li class="menu-item <?= ($title == 'book') ? 'active' : '' ?>">
-            <a href="<?= base_url("/book/index") ?>" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-book-alt"></i>
-              <div data-i18n="Analytics">Books</div>
-            </a>
+          <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Library</span>
           </li>
-
-          <li class="menu-item <?= ($title == 'genre') ? 'active' : '' ?>">
-            <a href="<?= base_url("/genre/index") ?>" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-bookmarks"></i>
-              <div data-i18n="Analytics">Genre</div>
+          <li class="menu-item <?= in_array($title, ['book', 'genre', 'pdf']) ? 'active open' : '' ?>">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-dock-top"></i>
+              <div data-i18n="Books Settings">Books Settings</div>
             </a>
+            <ul class="menu-sub">
+              <li class="menu-item <?= ($title == 'book') ? 'active' : '' ?>">
+                <a href="<?= base_url("/book/index") ?>" class="menu-link">
+                  <div data-i18n="Books">Books</div>
+                </a>
+              </li>
+              <li class="menu-item <?= ($title == 'genre') ? 'active' : '' ?>">
+                <a href="<?= base_url("/genre/index") ?>" class="menu-link">
+                  <div data-i18n="Genre">Genre</div>
+                </a>
+              </li>
+            </ul>
           </li>
 
         </ul>
@@ -213,18 +221,26 @@
             <ul class="navbar-nav flex-row align-items-center ms-auto">
               <!-- User -->
               <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                <a class="nav-link dropdown-toggle hide-arrow" href="" data-bs-toggle="dropdown">
                   <div class="avatar avatar-online">
-                    <img src="<?= base_url("asset/backend/assets/img/avatars/1.png") ?>" alt class="w-px-40 h-auto rounded-circle" />
+                    <?php if (!empty(session('img'))): ?>
+                      <img class="rounded-circle" src="<?= base_url("asset/img/avatar/" . session('img')) ?>">
+                    <?php else: ?>
+                      <img class="rounded-circle" src="<?= base_url("asset/img/avatar/default.jpg") ?>">
+                    <?php endif; ?>
                   </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
                   <li>
-                    <a class="dropdown-item" href="#">
+                    <a class="dropdown-item" href="<?= base_url("/user/edit/" . session('id')) ?>">
                       <div class="d-flex">
                         <div class="flex-shrink-0 me-3">
                           <div class="avatar avatar-online">
-                            <img src="<?= base_url("asset/backend/assets/img/avatars/1.png") ?>" alt class="w-px-40 h-auto rounded-circle" />
+                            <?php if (!empty($user['img'])): ?>
+                              <img src="<?= base_url("asset/img/avatar/" . $user['img']) ?>" alt class="w-px-40 h-auto rounded-circle" />
+                            <?php else: ?>
+                              <img src="<?= base_url("asset/img/avatar/default.jpg") ?>" alt class="w-px-40 h-auto rounded-circle" />
+                            <?php endif; ?>
                           </div>
                         </div>
                         <div class="flex-grow-1">
@@ -238,7 +254,7 @@
                     <div class="dropdown-divider"></div>
                   </li>
                   <li>
-                    <a class="dropdown-item" href="#">
+                    <a class="dropdown-item" href="<?= base_url("/user/edit/" . session('id')) ?>">
                       <i class="bx bx-cog me-2"></i>
                       <span class="align-middle">Settings</span>
                     </a>

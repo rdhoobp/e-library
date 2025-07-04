@@ -10,8 +10,13 @@ class Home extends BaseController
 {
 	public function index()
 	{
-		$model = new BookModel();
-		$data['book'] = $model->findAll();
+		$bookModel = new BookModel();
+		// $genreModel = new GenreModel();
+		$data['book'] = $bookModel->orderBy('hit_counter', 'DESC')->findAll();
+		$bookModel = new BookModel();
+		$data['best_selling'] = $bookModel->orderBy('hit_counter', 'DESC')->first();
+		$data['book_in_general'] = $bookModel->orderBy('hit_counter', 'ASC')->findAll(4);
+		$data['book_genres'] = $bookModel->orderBy('hit_counter', 'DESC')->findAll(4);
 		return view('tampilan/main_page', $data);
 	}
 	public function login()
@@ -47,71 +52,106 @@ class Home extends BaseController
 	}
 	public function userupdate()
 	{
-		$model = new UserModel();
-		$data = $this->request->getVar(['name', 'username', 'id']);
-		$nama_file = $_FILES['profile']['name'];
-		$img = $this->request->getFile('profile');
-		//var_dump($nama_file);exit;
-		if ($nama_file != "") {
-			$validate = $this->validate([
-				'username' => [
-					'rules' => "required|is_unique[user.username,id,{$data['username']}]",
-					'errors' => [
-						'required' => 'Kolom Username Harus Di isi!!',
-						'is_unique' => 'Username sudah terdaftar!! Harap gunakan username lain!!!'
-					]
-				],
-				'name' => [
-					'rules' => 'required',
-					'errors' => [
-						'required' => 'Kolom Nama Harus Di isi!!!'
-					]
-				],
-				'profile' => [
-					'label' => 'Image File',
-					'rules' => [
-						'uploaded[profile]',
-						'is_image[profile]',
-						'mime_in[profile,image/jpg,image/jpeg,image/gif,image/png,image/webp]',
-						'max_size[profile,100]',
-						'max_dims[profile,1024,768]',
-					],
-				],
-			]);
+		$model = new \App\Models\UserModel();
+		$id = $this->request->getPost('id');
+
+		// Get existing user
+		$user = $model->find($id);
+		if (!$user) {
+			session()->setFlashdata('error', 'User not found.');
+			return redirect()->to('/user/settings/' . $id);
+		}
+
+		$username = $this->request->getPost('username');
+		$name     = $this->request->getPost('name');
+		$img      = $this->request->getFile('profile');
+
+		// Base validation rules
+		$rules = [
+			'name' => 'required'
+		];
+
+		// Only check is_unique if username has changed
+		if ($username !== $user['username']) {
+			$rules['username'] = 'required|is_unique[user.username]';
 		} else {
-			$validate = $this->validate([
-				'username' => [
-					'rules' => "required|is_unique[user.username,id,{$data['username']}]",
-					'errors' => [
-						'required' => 'Kolom Username Harus Di isi!!',
-						'is_unique' => 'Username sudah terdaftar!! Harap gunakan username lain!!!'
-					]
-				],
-				'name' => [
-					'rules' => 'required',
-					'errors' => [
-						'required' => 'Kolom Nama Harus Di isi!!!'
-					]
+			$rules['username'] = 'required';
+		}
+
+		// File validation
+		if ($img && $img->isValid() && !$img->hasMoved()) {
+			$rules['profile'] = [
+				'rules' => 'is_image[profile]|mime_in[profile,image/jpg,image/jpeg,image/png,image/webp]|max_size[profile,2048]',
+				'errors' => [
+					'is_image' => 'File harus berupa gambar.',
+					'mime_in'  => 'Format gambar tidak didukung.',
+					'max_size' => 'Ukuran maksimum gambar adalah 2MB.'
 				]
-			]);
+			];
 		}
-		if (!$validate) {
-			return redirect()->back()->withInput();
+
+		// Validate
+		if (!$this->validate($rules)) {
+			return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
 		}
-		if (! $img->hasMoved()) {
-			$img->move(ROOTPATH . 'public\asset\img\avatar');
-			$model->where('id_user', $data['id'])->set([
-				'img' => $nama_file,
-				'username' => $data['username'],
-				'name' => $data['name']
-			])->update();
-			session()->setFlashdata("success", "Akun Anda Berhasil Di ganti!");
-			return redirect()->back();
-		} else {
-			session()->setFlashdata("error", "file dengan nama tersebut telah ada,harap ubah nama file!!!");
-			return redirect()->back();
+
+		// Prepare data
+		$data = [
+			'username' => $username,
+			'name'     => $name
+		];
+
+		// Handle image upload
+		if ($img && $img->isValid() && !$img->hasMoved()) {
+			$imgName = $img->getClientName();
+			$img->move('asset/img/avatar', $imgName);
+			$data['img'] = $imgName;
+
+			// Delete old image
+			if (!empty($user['img']) && $user['img'] !== 'default.jpg') {
+				$oldPath = 'asset/img/avatar/' . $user['img'];
+				if (file_exists($oldPath)) {
+					unlink($oldPath);
+				}
+			}
 		}
+
+		$model->update($id, $data);
+		session()->setFlashdata('success', 'Akun berhasil diperbarui.');
+		return redirect()->to('/user/settings/' . $id);
 	}
+	public function deleteAccount()
+	{
+		$id = session()->get('id');
+		$password = $this->request->getPost('password');
+		$model = new \App\Models\UserModel();
+
+		$user = $model->find($id);
+		if (!$user) {
+			session()->setFlashdata('error', 'User tidak ditemukan.');
+			return redirect()->back();
+		}
+
+		// Check password
+		if (!password_verify($password, $user['password'])) {
+			session()->setFlashdata('error', 'Password salah. Akun tidak dihapus.');
+			return redirect()->back();
+		}
+
+		// Delete image (optional)
+		if (!empty($user['img']) && $user['img'] !== 'default.jpg') {
+			$imgPath = 'asset/img/avatar/' . $user['img'];
+			if (file_exists($imgPath)) {
+				unlink($imgPath);
+			}
+		}
+
+		$model->delete($id);
+		session()->destroy(); // logout
+		session()->setFlashdata('success', 'Akun berhasil dihapus.');
+		return redirect()->to('/');
+	}
+
 	public function session_terminate()
 	{
 		$session = session();
@@ -144,10 +184,10 @@ class Home extends BaseController
 			$data['data'] = $model->where('book_id', $id)->first();
 			$counter = (int)$data['data']['hit_counter'];
 			$count = $counter + 1;
-			$model->where('book_id',$id)->set(['hit_counter'=>$count])->update();
+			$model->where('book_id', $id)->set(['hit_counter' => $count])->update();
 			return view('tampilan/book_detail.php', $data);
-		}else{
-			session()->setFlashdata("error","Anda Harus Login Terlebih Dahulu!!!");
+		} else {
+			session()->setFlashdata("error", "Anda Harus Login Terlebih Dahulu!!!");
 			return redirect()->to(base_url('login'));
 		}
 	}

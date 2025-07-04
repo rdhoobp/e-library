@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Models\DashboardModel;
+use App\Models\UserModel;
 
 class Dashboard extends BaseController
 {
@@ -11,6 +11,9 @@ class Dashboard extends BaseController
         if (session('role') != 1 || session('role') == null) {
             return redirect()->to('/');
         }
+        $id = session('id');
+        $model = new UserModel();
+        $data['user'] = $model->where('id_user', $id)->first();
         $data['title'] = "dashboard";
         return view('admin/index.php', $data);
     }

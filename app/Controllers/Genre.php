@@ -105,4 +105,21 @@ class Genre extends BaseController
             return redirect()->back();
         }
     }
+    public function delete($id)
+    {
+        if (session('role') != 1 || session('role') == null) {
+            return redirect()->to('/');
+        }
+
+        $model = new GenreModel();
+        $deleted = $model->delete($id);
+
+        if ($deleted) {
+            session()->setFlashdata('success', 'Genre berhasil dihapus!');
+        } else {
+            session()->setFlashdata('error', 'Gagal menghapus genre.');
+        }
+
+        return redirect()->to('/genre');
+    }
 }

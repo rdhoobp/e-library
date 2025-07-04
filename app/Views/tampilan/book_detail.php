@@ -3,82 +3,85 @@
 <section class="bg-sand padding-medium">
     <div class="container">
         <div class="row">
+            <!-- Book Cover -->
             <div class="col-md-5">
-                <a href="#" class="product-image">
-                    <img src="<?= base_url("asset/img/book_cover/" . $data['cover']) ?>" alt="" class="product-image">
-                </a>
+                <img src="<?= base_url("asset/img/book_cover/" . esc($data['cover'])) ?>" alt="Book Cover" class="img-fluid rounded shadow-sm">
             </div>
-            <div class="col-md-7 pl-5">
+
+            <!-- Book Info -->
+            <div class="col-md-7 ps-md-5 mt-4 mt-md-0">
                 <div class="product-detail">
-                    <span>
-                        <?php foreach ($genre as $genre): ?>
-                            <?php if ($genre['genre_id'] == $data['genre_id']) {
-                                echo $genre['name'];
-                            } ?>
+                    <span class="badge bg-secondary mb-2">
+                        <?php foreach ($genre as $g): ?>
+                            <?php if ($g['genre_id'] == $data['genre_id']) echo esc($g['name']); ?>
                         <?php endforeach; ?>
                     </span>
-                    <h1><?= $data['title'] ?></h1>
-                    <!-- <div class="rating-container d-flex align-items-center text-warning mb-4"></div> -->
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo ut iure quae reprehenderit voluptates quas, ad assumenda nemo quasi corrupti ea eveniet commodi dolor magni praesentium adipisci provident unde neque?</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis sequi ad, mollitia commodi aut rem, quod asperiores quae consectetur totam vitae id? Vero aut quas facilis vel nemo repellat corporis?</p>
-                    <div class="d-flex gap-3">
-                        <a href="#">
-                            Read
-                        </a>
-                    </div>
+                    <h1 class="mb-3"><?= esc($data['title']) ?></h1>
+                    <h6 class="text-muted">by <?= esc($data['author']) ?> • ISBN: <?= esc($data['isbn']) ?></h6>
+                    <hr>
+                    <p><?= esc($data['deskripsi']) ?></p>
+
+                    <!-- Read Button Logic -->
+                    <?php if (!empty($data['pdf']) && $data['pdf'] !== 'null'): ?>
+                        <?php if (session()->has('id')): ?>
+                            <a href="#read-section" class="btn btn-primary mt-3">Read Book</a>
+                        <?php else: ?>
+                            <a href="<?= base_url('login') ?>" class="btn btn-warning mt-3">Login to Read</a>
+                        <?php endif; ?>
+                    <?php endif; ?>
+
                 </div>
             </div>
         </div>
     </div>
 </section>
-<?php
-if (!isset($data['pdf_link']) || $data['pdf_link'] == 'null') {
-} else { ?>
-    <div>
-        <embed src="<?= base_url("asset/pdf/". $data['pdf_link']) ?>" width="800" height="500">
-    </div>
-<?php }
-?>
 
+<!-- PDF Viewer -->
+<?php if (!empty($data['pdf']) && $data['pdf'] !== 'null' && session()->has('id')): ?>
+    <section id="read-section" class="bg-light py-5">
+        <div class="container">
+            <h3 class="mb-4">Preview: <?= esc($data['title']) ?></h3>
+            <div class="ratio ratio-16x9">
+                <iframe src="<?= base_url("asset/pdf/" . $data['pdf']) ?>" allowfullscreen></iframe>
+            </div>
+        </div>
+    </section>
+<?php endif; ?>
+
+<!-- Tabs Section (optional details) -->
 <section class="product-tabs mt-5">
     <div class="container">
-        <div class="row">
-            <div class="tabs-listing">
-                <nav>
-                    <div class="nav nav-tabs d-flex justify-content-center" id="nav-tab">
-                        <button class="nav-link active text-uppercase px-5 py-3" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Description</button>
-                        <button class="nav-link text-uppercase px-5 py-3" id="nav-information-tab" data-bs-toggle="tab" data-bs-target="#nav-information" type="button" role="tab" aria-controls="nav-information" aria-selected="false" tabindex="-1">Additional information</button>
-                        <button class="nav-link text-uppercase px-5 py-3" id="nav-shipping-tab" data-bs-toggle="tab" data-bs-target="#nav-shipping" type="button" role="tab" aria-controls="nav-shipping" aria-selected="false" tabindex="-1">Shipping &amp; Return</button>
-                    </div>
-                </nav>
-                <div class="tab-content py-5" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                        <h5>Product Description</h5>
-                        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat
-                            mattis eros.
-                            Nullam malesuada erat ut turpis. Suspendisse urna viverra non, semper suscipit, posuere
-                            a, pede. Donec
-                            nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean
-                            dignissim
-                            pellentesque felis. Phasellus ultrices nulla quis nibh. Quisque a lectus. Donec
-                            consectetuer ligula
-                            vulputate sem tristique cursus.
-                        </p>
-                        <ul>
-                            <li>Donec nec justo eget felis facilisis fermentum.</li>
-                            <li>Suspendisse urna viverra non, semper suscipit pede.</li>
-                            <li>Aliquam porttitor mauris sit amet orci.</li>
-                        </ul> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat
-                        mattis
-                        eros. Nullam malesuada erat ut turpis. Suspendisse urna viverra non, semper suscipit,
-                        posuere a, pede.
-                        Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci.
-                        Aenean dignissim
-                        pellentesque felis. Phasellus ultrices nulla quis nibh. Quisque a lectus. Donec consectetuer
-                        ligula
-                        vulputate sem tristique cursus. <p></p>
-                    </div>
-                </div>
+        <ul class="nav nav-tabs justify-content-center" role="tablist">
+            <li class="nav-item">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab">Description</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#additional-info" type="button" role="tab">Additional Info</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#return" type="button" role="tab">Shipping & Return</button>
+            </li>
+        </ul>
+
+        <div class="tab-content pt-4">
+            <div class="tab-pane fade show active" id="description" role="tabpanel">
+                <h5>Sinopsis</h5>
+                <p><?= esc($data['sinopsis']) ?></p>
+            </div>
+            <div class="tab-pane fade" id="additional-info" role="tabpanel">
+                <ul>
+                    <li><strong>Author:</strong> <?= esc($data['author']) ?></li>
+                    <li><strong>Publisher:</strong> <?= esc($data['publisher']) ?></li>
+                    <li><strong>ISBN:</strong> <?= esc($data['isbn']) ?></li>
+                    <li><strong>Genre:</strong>
+                        <?php foreach ($genre as $g): ?>
+                            <?php if ($g['genre_id'] == $data['genre_id']) echo esc($g['name']); ?>
+                        <?php endforeach; ?>
+                    </li>
+                </ul>
+            </div>
+            <div class="tab-pane fade" id="return" role="tabpanel">
+                <p>This book is provided digitally and is non-returnable. If you experience technical issues, contact our support.</p>
             </div>
         </div>
     </div>

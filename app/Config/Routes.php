@@ -45,29 +45,33 @@ $routes->get('/user/settings/(:num)', 'Home::usersetting/$1');
 $routes->post('/user/settings/update', 'Home::userupdate');
 $routes->post('/user/password/update', 'Home::passwordupdate');
 $routes->get('/forgot-password', 'Home::change_password');
+$routes->post('/user/delete', 'Home::deleteAccount');
 $routes->get('/logout', 'Home::session_terminate');
-$routes->get('/book/list','Home::book');
-$routes->get('/book/detail/(:num)','Home::book_detail/$1');
-$routes->get('/book/cari','Home::book_cari');
+$routes->get('/book/list', 'Home::book');
+$routes->get('/book/detail/(:num)', 'Home::book_detail/$1');
+$routes->get('/book/cari', 'Home::book_cari');
 // backend user
 $routes->get('/dashboard', 'Dashboard::index');
 $routes->get('/user/index', 'User::user_index');
 $routes->get('/user/add', 'User::user_add');
 $routes->get('/user/edit/(:num)', 'User::user_edit/$1');
 $routes->post('/user/input', 'User::user_input');
-$routes->post('/user/edit/update', 'User::user_update');
+$routes->post('/user/update', 'User::user_update');
+$routes->get('/user/user_delete/(:num)', 'User::user_delete/$1');
 //backend buku
 $routes->get('/book/index', 'Book::index');
 $routes->get('/book/add', 'Book::tambah');
 $routes->get('/book/edit/(:num)', 'Book::edit/$1');
 $routes->post('book/input', 'Book::book_input');
-$routes->post('/book/edit/update', 'Book::book_update');
+$routes->post('/book/update/(:num)', 'Book::book_update/$1');
+$routes->get('/book/delete/(:num)', 'Book::book_delete/$1');
 //backend genre
-$routes->get('/genre/index','Genre::index');
-$routes->get('/genre/add','Genre::tambah');
-$routes->get('/genre/edit/(:num)','Genre::edit/$1');
-$routes->post('/genre/input','Genre::genre_input');
-$routes->post('/genre/edit/update','Genre::genre_update');
+$routes->get('/genre/index', 'Genre::index');
+$routes->get('/genre/add', 'Genre::tambah');
+$routes->get('/genre/edit/(:num)', 'Genre::edit/$1');
+$routes->post('/genre/input', 'Genre::genre_input');
+$routes->post('/genre/edit/update', 'Genre::genre_update');
+$routes->get('/genre/delete/(:num)', 'Genre::delete/$1');
 /*
  * --------------------------------------------------------------------
  * Additional Routing
